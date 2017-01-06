@@ -7,7 +7,6 @@
 
 SEAFILE_PATH=''                       # will be defined later on
 SEAFILE_URL="https://$SERVER_IP"      # note https (assuming you've enabled https)
-SEAFILE_ROOT='/seafile'               # domain/{root} under which seafile will be served from
 VER_REGEX='^[0-9]+\.[0-9]+\.[0-9]+$'  # seafile version validation regex
 
 
@@ -104,7 +103,7 @@ setup_ccnet_for_nginx() {
     readonly f='./conf/ccnet.conf'
 
     check_is_file "$f"
-    crudini --set "$f" General SERVICE_URL "${SEAFILE_URL}$SEAFILE_ROOT"
+    crudini --set "$f" General SERVICE_URL "${SEAFILE_URL}"
 }
 
 
@@ -119,14 +118,6 @@ setup_seahub_settings_for_nginx() {
 
     check_is_file "$f"
     cat >> "$f" <<EOF
-# first block is from and for: https://manual.seafile.com/deploy/deploy_seahub_at_non-root_domain.html
-SERVE_STATIC = False
-MEDIA_URL = '/seafmedia/'
-COMPRESS_URL = MEDIA_URL
-STATIC_URL = MEDIA_URL + 'assets/'
-SITE_ROOT = '$SEAFILE_ROOT/'
-LOGIN_URL = '$SEAFILE_ROOT/accounts/login/'
-
 ENABLE_SIGNUP = False
 ACTIVATE_AFTER_REGISTRATION = False
 FILE_SERVER_ROOT = '${SEAFILE_URL}/seafhttp'
