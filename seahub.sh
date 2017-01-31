@@ -4,7 +4,7 @@ readonly LOG=/var/log/seafile.log
 
 function stop_server() {
     #ps ax | grep run_gunicorn | awk '{ print $1 }' | xargs kill
-    pgrep -f run_gunicorn | xargs kill
+    pgrep -f seahub | xargs kill
     exit 0
 }
 
@@ -19,7 +19,7 @@ else
 fi
 
 # Script should not exit unless seahub died
-while pgrep -f "manage.py run_gunicorn" >/dev/null 2>&1; do
+while pgrep -f "seahub\/manage.py" >/dev/null 2>&1; do
     sleep 5
 done
 

@@ -15,7 +15,7 @@ The image only prepares the base system and provides some support during install
 [Reading through the setup manual](https://github.com/haiwen/seafile/wiki/Download-and-setup-seafile-server)
 before setting up Seafile is recommended.
 
-Run the image in a container, exposing ports as needed and making `/seafile` permanent.
+Run the image in a container, exposing ports as needed and making `/seafile` volume permanent.
 For setting seafile up, maintaining its configuration or performing updates, make
 sure to start a shell. As the image builds on
 [`phusion/baseimage`](https://github.com/phusion/baseimage-docker), do so by
@@ -29,8 +29,8 @@ For example, you could use following command to install & setup
     docker run -it \
       -e VER=latest \
       -e SERVER_NAME=seafile-server \
-      -e SERVER_IP=ip \
-      -e SEAHUB_ADMIN_USER=youruser \
+      -e SERVER_IP=seafile.yourdomain.com \
+      -e SEAHUB_ADMIN_USER=youradminuser \
       -e SEAHUB_ADMIN_PW=yourpassword \
       -v /path/on/host:/seafile \
       layr/docker-seafile -- setup-seafile
