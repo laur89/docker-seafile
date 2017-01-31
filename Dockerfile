@@ -17,8 +17,7 @@ RUN apt-get update && \
         python-memcache \
         wget \
         crudini \
-        unattended-upgrades \
-        socat && \
+        unattended-upgrades && \
     update-locale LANG=C.UTF-8
 
 RUN ulimit -n 30000

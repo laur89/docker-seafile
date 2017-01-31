@@ -12,9 +12,6 @@ trap stop_server SIGINT SIGTERM
 
 [[ "$AUTOSTART" =~ ^[Tt]rue && -x /seafile/seafile-server-latest/seafile.sh ]] || exit 0
 
-# Fix for https://github.com/haiwen/seafile/issues/478, forward seafdav localhost-only port
-[[ "$WORKAROUND478" =~ [Tt]rue ]] && socat TCP4-LISTEN:8080,fork TCP4:localhost:8081 &
-
 /seafile/seafile-server-latest/seafile.sh start >> "$LOG" 2>&1
 
 # wait for process to spin up:

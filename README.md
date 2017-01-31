@@ -76,12 +76,3 @@ upgrade process described in the [Seafile upgrade manual](https://github.com/hai
 `download-seafile` might help you with the first steps if already updated to the
 newest version.
 
-## Workaround for [Seafile issue #478](https://github.com/haiwen/seafile/issues/478)
-
-If used in FastCGI mode, like [recommended when proxying WebDAV](http://manual.seafile.com/extension/webdav.html#sample-configuration-2-with-nginxapache),
-seafdav only listens on `localhost:8080`; with consequence that it cannot be exposed.
-The image has a workaround built-in, which uses `socat` listening on `0.0.0.0:8080`,
-forwarding to `localhost:8081`. To use it, modify `/seafile/conf/seafdav.conf` and
-change the `port` to `8081`, and restart the container enabling the workaround using
-`-e WORKAROUND478=true`.
-
