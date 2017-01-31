@@ -89,7 +89,7 @@ setup_webdav() {
 [WEBDAV]
 enabled = true
 port = 8080
-host = $SERVER_IP
+host = 0.0.0.0
 fastcgi = true
 share_name = /seafdav
 EOF
