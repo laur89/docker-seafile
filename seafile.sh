@@ -17,6 +17,9 @@ trap stop_server SIGINT SIGTERM
 
 /seafile/seafile-server-latest/seafile.sh start >> "$LOG" 2>&1
 
+# wait for process to spin up:
+sleep 5
+
 # Script should not exit unless seafile died
 while pgrep -f "seafile-controller" >/dev/null 2>&1; do
     sleep 5
