@@ -2,8 +2,7 @@ FROM        phusion/baseimage
 MAINTAINER    Laur
 # https://manual.seafile.com/deploy/using_sqlite.html
 
-ENV \
-    DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Seafile dependencies and system configuration
 RUN apt-get update && \
