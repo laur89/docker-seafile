@@ -4,7 +4,7 @@ readonly LOG=/var/log/seafile.log
 
 function stop_server() {
     pgrep -f 'seafile-controller|ccnet-server|seaf-server' | xargs kill
-    #kill $( ps ax | grep -E 'seafile-controller|ccnet-server|seaf-server' | grep -v grep | awk '{ print $1 }' | xargs )
+    #pkill -f seafile-controller
     exit 0
 }
 

@@ -12,6 +12,29 @@ An example of nginx config that could be used is included.
 
 ## Setup
 
+### MySql/Mariadb
+
+Assumes accessible db is already installed.
+
+Log in to the machine hosting the database and create the user & databases:
+https://github.com/foxel/seafile-docker/blob/master/scripts/setup.sh
+
+```
+mysql -uroot -p${DB_ROOT_PW} <<'EOF'
+DROP DATABASE IF EXISTS `ccnet_db`;
+DROP DATABASE IF EXISTS `seafile_db`;
+DROP DATABASE IF EXISTS `seahub_db`;
+CREATE DATABASE `ccnet_db` CHARACTER SET = 'utf8';
+CREATE DATABASE `seafile_db` CHARACTER SET = 'utf8';
+CREATE DATABASE `seahub_db` CHARACTER SET = 'utf8';
+CREATE USER IF NOT EXISTS 'seafile'@'%' IDENTIFIED BY 'seafile_passwd';
+GRANT ALL PRIVILEGES ON `ccnet_db`.* TO `seafile`@'%';
+GRANT ALL PRIVILEGES ON `seafile_db`.* TO `seafile`@'%';
+GRANT ALL PRIVILEGES ON `seahub_db`.* TO `seafile`@'%';
+FLUSH PRIVILEGES;
+EOF
+```
+
 First the embedded `setup-seafile` script is executed when running the image for the
 first time, that installs & sets up seafile under `/seafile`.
 [Reading through the setup manual](https://github.com/haiwen/seafile/wiki/Download-and-setup-seafile-server)
@@ -26,12 +49,20 @@ Run the image in a container, exposing ports as needed and making `/seafile` vol
 
 For example, you could use following command to install & setup
 
-    docker run -it \
+    docker run -it --rm \
       -e VER=latest \
+      -e IS_MYSQL=true \
       -e SERVER_NAME=seafile-server \
       -e SERVER_IP=seafile.yourdomain.com \
+      -e FILESERVER_PORT=8082 \
       -e SEAHUB_ADMIN_USER=youradminuser \
       -e SEAHUB_ADMIN_PW=yourpassword \
+      -e USE_EXISTING_DB=1 \
+      -e MYSQL_HOST=192.168.1.100 \
+      -e MYSQL_PORT=3306 \
+      -e MYSQL_ROOT_PASSWD=kalakala \
+      -e MYSQL_USER=seafile \
+      -e MYSQL_USER_PASSWD=seafile_passwd \
       -v /path/on/host:/seafile \
       layr/docker-seafile -- setup-seafile
 
