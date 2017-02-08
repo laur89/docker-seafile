@@ -10,7 +10,6 @@ RUN apt-get update && \
         python2.7 \
         libpython2.7 \
         python-setuptools \
-        python-simplejson \
         python-imaging \
         sqlite3 \
         python-memcache \

@@ -26,7 +26,7 @@ Run the image in a container, exposing ports as needed and making `/seafile` vol
 
 For example, you could use following command to install & setup
 
-    docker run -it \
+    docker run -it --rm \
       -e VER=latest \
       -e SERVER_NAME=seafile-server \
       -e SERVER_IP=seafile.yourdomain.com \
