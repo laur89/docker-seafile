@@ -56,7 +56,6 @@ match the one you used when creating the db tables & users)
     docker run -it --rm \
       -e VER=latest \
       -e SERVER_NAME=seafile-server \
-      -e SEAFILE_DIR=/seafile-data \
       -e SERVER_IP=seafile.yourdomain.com \
       -e FILESERVER_PORT=8082 \
       -e SEAHUB_ADMIN_USER=youradminuser \
@@ -70,7 +69,7 @@ match the one you used when creating the db tables & users)
       -e SEAFILE_DB=seafile_db \
       -e SEAHUB_DB=seahub_db \
       -v /path/on/host/to-installation-dir:/config \
-      -v /path/on/host/to-data-dir:/seafile-data \
+      --link memcached --link mariadb \
       layr/docker-seafile -- setup-seafile
 
 In case you want to use memcached instead of /tmp/seahub_cache/ add the following to
@@ -103,7 +102,6 @@ variable `AUTOSTART=true` is set.** A reasonable docker command would be
       -p 8080:8080 \
       -p 8082:8082 \
       -v /path/on/host/to-installation-dir:/config \
-      -v /path/on/host/to-data-dir:/seafile-data \
       -e AUTOSTART=true \
       layr/docker-seafile
 

@@ -5,10 +5,11 @@ MAINTAINER    Laur
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Seafile dependencies and system configuration
-RUN apt-get update && \
-    apt-get install -y \
+RUN apt-get update 
+RUN apt-get install --no-install-recommends -y \
         python2.7 \
         libpython2.7 \
+        python-pip \
         python-setuptools \
         python-imaging \
         python-mysqldb \
@@ -16,8 +17,17 @@ RUN apt-get update && \
         python-memcache \
         wget \
         crudini \
-        unattended-upgrades && \
-    update-locale LANG=C.UTF-8
+        unattended-upgrades
+RUN update-locale LANG=C.UTF-8
+
+# deps for pylibmc:
+RUN apt-get install --no-install-recommends -y \
+        libmemcached-dev \
+        zlib1g-dev \
+        python-dev \
+        build-essential
+
+RUN pip install pylibmc django-pylibmc
 
 RUN ulimit -n 30000
 
