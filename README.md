@@ -47,7 +47,8 @@ Run the image in a container, exposing ports as needed and making `/seafile` vol
 * `VER`: actual ver (eg `6.0.7`), or `latest`
 * `SERVER_IP`: domain or IP of the box where seafile is set up; without the protocol
 
-For example, you could use following command to install & setup
+For example, you could use following command to install & setup (note the db data must
+match the one you used when creating the db tables & users)
 
     docker run -it --rm \
       -e VER=latest \
@@ -63,6 +64,9 @@ For example, you could use following command to install & setup
       -e MYSQL_ROOT_PASSWD=kalakala \
       -e MYSQL_USER=seafile \
       -e MYSQL_USER_PASSWD=seafile_passwd \
+      -e CCNET_DB=ccnet_db \
+      -e SEAFILE_DB=seafile_db \
+      -e SEAHUB_DB=seahub_db \
       -v /path/on/host:/seafile \
       layr/docker-seafile -- setup-seafile
 
@@ -78,6 +82,8 @@ your seahub_settings.py:
 
 Link your memcached instance to your seafile container by adding
 `--link memcached_container:memcached` to your docker run statement.
+(or use [user defined networks](https://docs.docker.com/engine/userguide/networking/work-with-networks/#linking-containers-in-user-defined-networks)
+instead, as `--link` option is now deprecated)
 
 ## Running Seafile
 
