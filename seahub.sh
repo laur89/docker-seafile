@@ -10,12 +10,12 @@ function stop_server() {
 
 trap stop_server SIGINT SIGTERM
 
-[[ "$AUTOSTART" =~ [Tt]rue && -x /seafile/seafile-server-latest/seahub.sh ]] || exit 0
+[[ "$AUTOSTART" =~ [Tt]rue && -x /config/seafile-server-latest/seahub.sh ]] || exit 0
 
 # wait for seafile server to start:
 sleep 5
 
-SEAFILE_FASTCGI_HOST='0.0.0.0' /seafile/seafile-server-latest/seahub.sh start-fastcgi >> "$LOG"
+SEAFILE_FASTCGI_HOST='0.0.0.0' /config/seafile-server-latest/seahub.sh start-fastcgi >> "$LOG"
 
 # wait for process to spin up:
 sleep 5

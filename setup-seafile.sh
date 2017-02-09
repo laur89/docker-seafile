@@ -34,7 +34,7 @@ download_seafile() {
         url="https://bintray.com/artifact/download/seafile-org/seafile/seafile-server_${VER}_x86-64.tar.gz"
     fi
 
-    readonly SEAFILE_PATH="/seafile/seafile-server-$VER"  # define installation dir
+    readonly SEAFILE_PATH="/config/seafile-server-$VER"  # define installation dir
 
     # sanity:
     [[ -e "$SEAFILE_PATH" ]] && fail "[$SEAFILE_PATH] already exists; assuming [$VER] is already installed. abort."
@@ -53,11 +53,10 @@ download_seafile() {
 
 # Taken from https://github.com/haiwen/seafile-server-installer-cn/blob/master/seafile-server-ubuntu-14-04-amd64-http
 setup_seafile() {
-    local init_admin init_admin_bak mysql_cmd_suffix
+    local init_admin init_admin_bak
 
     readonly init_admin="${SEAFILE_PATH}/check_init_admin.py"
     readonly init_admin_bak="${init_admin}.bak"
-    [[ "$IS_MYSQL" == true ]] && readonly mysql_cmd_suffix='-mysql'
 
     check_is_file "$init_admin"
     # Backup check_init_admin.py befor applying changes
@@ -67,7 +66,7 @@ setup_seafile() {
     sed --follow-symlinks -i 's/= ask_admin_password()/= '"\"${SEAHUB_ADMIN_PW}\""'/' "$init_admin" || exit 1
 
     # TODO: -i param is only passed so python script would read env vars; see https://github.com/haiwen/seafile-server/pull/24
-    "${SEAFILE_PATH}/setup-seafile${mysql_cmd_suffix}.sh" auto -i "$SERVER_IP" || fail "seafile setup failed."
+    "${SEAFILE_PATH}/setup-seafile-mysql.sh" auto -i "$SERVER_IP" || fail "seafile setup failed."
 
     # Start and stop Seafile eco system. This generates the initial admin user.
     "${SEAFILE_PATH}/seafile.sh" start || exit 1
@@ -129,7 +128,7 @@ ENABLE_THUMBNAIL = True
 CACHES = {
     'default': {
         'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
-        'LOCATION': '192.168.1.100:11211',
+        'LOCATION': 'memcached:11211',
     }
 }
 EOF

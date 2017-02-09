@@ -12,6 +12,7 @@ RUN apt-get update && \
         python-setuptools \
         python-imaging \
         python-mysqldb \
+        python-urllib3 \
         python-memcache \
         wget \
         crudini \
@@ -21,7 +22,7 @@ RUN apt-get update && \
 RUN ulimit -n 30000
 
 # Interface the environment; download seafile tarball
-RUN mkdir -p /seafile
+RUN mkdir -p /config
 
 EXPOSE 10001 12001 8000 8080 8082
 
@@ -36,9 +37,9 @@ ADD seahub.sh /etc/service/seahub/run
 ADD setup-seafile.sh /usr/local/sbin/setup-seafile
 ADD apt-auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
-#VOLUME /seafile
+#VOLUME /config
 
 # Clean up for smaller image
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR "/seafile"
+WORKDIR "/config"
