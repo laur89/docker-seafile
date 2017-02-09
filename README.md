@@ -101,7 +101,6 @@ variable `AUTOSTART=true` is set.** A reasonable docker command would be
       -p 8082:8082 \
       -v /path/on/host:/seafile \
       -e AUTOSTART=true \
-      -e FASTCGI=true \
       layr/docker-seafile
 
 For unraid users, this is the command that should to be converted into a Docker template.

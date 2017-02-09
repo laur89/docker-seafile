@@ -15,11 +15,7 @@ trap stop_server SIGINT SIGTERM
 # wait for seafile server to start:
 sleep 5
 
-if [[ "$FASTCGI" =~ [Tt]rue ]]; then
-    SEAFILE_FASTCGI_HOST='0.0.0.0' /seafile/seafile-server-latest/seahub.sh start-fastcgi >> "$LOG"
-else
-    /seafile/seafile-server-latest/seahub.sh start >> "$LOG" 2>&1
-fi
+SEAFILE_FASTCGI_HOST='0.0.0.0' /seafile/seafile-server-latest/seahub.sh start-fastcgi >> "$LOG"
 
 # wait for process to spin up:
 sleep 5
