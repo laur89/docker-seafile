@@ -10,9 +10,9 @@ function stop_server() {
 
 trap stop_server SIGINT SIGTERM
 
-[[ "$AUTOSTART" =~ ^[Tt]rue && -x /config/seafile-server-latest/seafile.sh ]] || exit 0
+[[ "$AUTOSTART" =~ ^[Tt]rue && -x /seafile/seafile-server-latest/seafile.sh ]] || exit 0
 
-/config/seafile-server-latest/seafile.sh start >> "$LOG" 2>&1
+/seafile/seafile-server-latest/seafile.sh start >> "$LOG" 2>&1
 
 # wait for process to spin up:
 sleep 5

@@ -39,13 +39,13 @@ EOF
 ### Seafile setup
 
 First the embedded `setup-seafile` script is executed when running the image for the
-first time, that installs & sets up seafile under `/config`.
+first time, that installs & sets up seafile under `/seafile`.
 [Reading through the setup manual](https://github.com/haiwen/seafile/wiki/Download-and-setup-seafile-server)
 before setting up Seafile is recommended.
 If you're using this docker on unraid, this means running the `docker run` command
 below from command line, not from template.
 
-Run the image in a container, exposing ports as needed and making `/config` volume permanent:
+Run the image in a container, exposing ports as needed and making `/seafile` volume permanent:
 
 * `VER`: actual ver (eg `6.0.7`), or `latest`
 * `SERVER_IP`: domain or IP of the box where seafile is set up; without the protocol
@@ -68,7 +68,7 @@ match the one you used when creating the db tables & users)
       -e CCNET_DB=ccnet_db \
       -e SEAFILE_DB=seafile_db \
       -e SEAHUB_DB=seahub_db \
-      -v /path/on/host/to-installation-dir:/config \
+      -v /path/on/host/to-installation-dir:/seafile \
       --link memcached --link mariadb \
       layr/docker-seafile -- setup-seafile
 
@@ -101,7 +101,7 @@ variable `AUTOSTART=true` is set.** A reasonable docker command would be
       -p 8000:8000 \
       -p 8080:8080 \
       -p 8082:8082 \
-      -v /path/on/host/to-installation-dir:/config \
+      -v /path/on/host/to-installation-dir:/seafile \
       -e AUTOSTART=true \
       layr/docker-seafile
 
@@ -109,7 +109,7 @@ For unraid users, this is the command that should to be converted into a Docker 
 
 ## Updates and Maintenance
 
-The Seafile binaries are stored in the permanent volume `/config`. To update the
+The Seafile binaries are stored in the permanent volume `/seafile`. To update the
 base system, just stop and drop the container, update the image using
 `docker pull layr/docker-seafile` and run it again. To update Seafile, follow the normal
 upgrade process described in the [Seafile upgrade manual](https://github.com/haiwen/seafile/wiki/Upgrading-Seafile-Server).

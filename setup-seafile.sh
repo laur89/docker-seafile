@@ -34,7 +34,7 @@ download_seafile() {
         url="https://bintray.com/artifact/download/seafile-org/seafile/seafile-server_${VER}_x86-64.tar.gz"
     fi
 
-    readonly SEAFILE_PATH="/config/seafile-server-$VER"  # define installation dir
+    readonly SEAFILE_PATH="/seafile/seafile-server-$VER"  # define installation dir
 
     # sanity:
     [[ -e "$SEAFILE_PATH" ]] && fail "[$SEAFILE_PATH] already exists; assuming [$VER] is already installed. abort."
