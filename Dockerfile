@@ -2,8 +2,7 @@ FROM        phusion/baseimage
 MAINTAINER    Laur
 # https://manual.seafile.com/deploy/using_sqlite.html
 
-ENV \
-    DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Seafile dependencies and system configuration
 RUN apt-get update && \
@@ -11,14 +10,12 @@ RUN apt-get update && \
         python2.7 \
         libpython2.7 \
         python-setuptools \
-        python-simplejson \
         python-imaging \
         sqlite3 \
         python-memcache \
         wget \
         crudini \
-        unattended-upgrades \
-        socat && \
+        unattended-upgrades && \
     update-locale LANG=C.UTF-8
 
 RUN ulimit -n 30000
