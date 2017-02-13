@@ -9,7 +9,6 @@ RUN apt-get update
 RUN apt-get install --no-install-recommends -y \
         python2.7 \
         libpython2.7 \
-        python-pip \
         python-setuptools \
         python-imaging \
         python-mysqldb \
@@ -22,6 +21,7 @@ RUN update-locale LANG=C.UTF-8
 
 # deps for pylibmc:
 RUN apt-get install --no-install-recommends -y \
+        python-pip \
         libmemcached-dev \
         zlib1g-dev \
         python-dev \
@@ -49,6 +49,7 @@ ADD apt-auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
 # Clean up for smaller image
 RUN apt-get purge -y \
+        python-pip \
         zlib1g-dev \
         python-dev \
         build-essential

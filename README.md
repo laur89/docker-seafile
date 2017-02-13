@@ -4,12 +4,13 @@
 with advanced features on file syncing, privacy protection and teamwork".
 
 This Dockerfile does not really package Seafile for Docker, but provides an environment
-for running it including startup scripts, including all dependencies for MySQL.
+for running it including startup scripts + all dependencies for using MySQL and
+memcached.
 
-Provides with only MySQL-backed installation (not SQLite). DB is expected to be created
-before seafile is set up.
-Note this installation of seafile is intended to be ran behind a reverse proxy over https.
-An example of nginx config that could be used is included.
+Note this version provides only with MySQL-backed installation (not SQLite). Both db
+and memcache instances are expected to be created before seafile is set up.
+Also note this installation of seafile is expected to be ran behind a reverse proxy
+over https. An example of nginx config that could be used is included.
 
 ## Setup
 
@@ -17,7 +18,7 @@ An example of nginx config that could be used is included.
 
 Assumes accessible mysql/maria db is already installed.
 
-Log in to the machine hosting the database and create the user & databases:
+Log in to the docker/machine hosting the database and create the user & databases:
 (from https://github.com/foxel/seafile-docker/blob/master/scripts/setup.sh)
 
 ```
@@ -36,25 +37,28 @@ FLUSH PRIVILEGES;
 EOF
 ```
 
-### Seafile setup
+Note you need to link seafile docker to the mariasb/mysql docker by `--link`ing it.
 
-First the embedded `setup-seafile` script is executed when running the image for the
-first time, that installs & sets up seafile under `/seafile`.
+### Seafile
+
+The embedded `setup-seafile` script is executed when running the image for the
+first time, which installs & sets up seafile under `/seafile`.
 [Reading through the setup manual](https://github.com/haiwen/seafile/wiki/Download-and-setup-seafile-server)
-before setting up Seafile is recommended.
+before setting up Seafile is still recommended, since there are more configuration
+options that can be used and could be considered.
 If you're using this docker on unraid, this means running the `docker run` command
 below from command line, not from template.
 
 Run the image in a container, exposing ports as needed and making `/seafile` volume permanent:
 
-* `VER`: actual ver (eg `6.0.7`), or `latest`
+* `VER`: actual seafile server ver (eg `6.0.7`), or `latest`
 * `SERVER_IP`: domain or IP of the box where seafile is set up; without the protocol
 
 For example, you could use following command to install & setup (note the db data must
 match the one you used when creating the db tables & users)
 
     docker run -it --rm \
-      -e VER=latest \
+      -e VER=6.0.7 \
       -e SERVER_NAME=seafile-server \
       -e SERVER_IP=seafile.yourdomain.com \
       -e FILESERVER_PORT=8082 \
@@ -69,20 +73,11 @@ match the one you used when creating the db tables & users)
       -e SEAFILE_DB=seafile_db \
       -e SEAHUB_DB=seahub_db \
       -v /path/on/host/to-installation-dir:/seafile \
-      --link memcached --link mariadb \
+      --link memcached \
+      --link mariadb \
       layr/docker-seafile -- setup-seafile
 
-In case you want to use memcached instead of /tmp/seahub_cache/ add the following to
-your seahub_settings.py:
-
-    CACHES = {
-      'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'memcached:11211',
-      }
-    }
-
-Link your memcached instance to your seafile container by adding
+Note the memcached instance is linked to your seafile container by adding
 `--link memcached_container:memcached` to your docker run statement.
 (or use [user defined networks](https://docs.docker.com/engine/userguide/networking/work-with-networks/#linking-containers-in-user-defined-networks)
 instead, as `--link` option is now deprecated)
@@ -103,9 +98,11 @@ variable `AUTOSTART=true` is set.** A reasonable docker command would be
       -p 8082:8082 \
       -v /path/on/host/to-installation-dir:/seafile \
       -e AUTOSTART=true \
+      --link memcached \
+      --link mariadb \
       layr/docker-seafile
 
-For unraid users, this is the command that should to be converted into a Docker template.
+For unraid users: this is the command that should to be converted into a Docker template.
 
 ## Updates and Maintenance
 
