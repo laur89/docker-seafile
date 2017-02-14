@@ -37,7 +37,7 @@ FLUSH PRIVILEGES;
 EOF
 ```
 
-Note you need to link seafile docker to the mariasb/mysql docker by `--link`ing it.
+Note you need to link seafile docker to the mariadb/mysql docker by `--link`ing it.
 
 ### Seafile
 
@@ -65,7 +65,7 @@ match the one you used when creating the db tables & users)
       -e SEAHUB_ADMIN_USER=youradminuser \
       -e SEAHUB_ADMIN_PW=yourpassword \
       -e USE_EXISTING_DB=1 \
-      -e MYSQL_HOST=mariadb \
+      -e MYSQL_HOST=db \
       -e MYSQL_PORT=3306 \
       -e MYSQL_USER=seafile \
       -e MYSQL_USER_PASSWD=seafile_passwd \
@@ -74,7 +74,7 @@ match the one you used when creating the db tables & users)
       -e SEAHUB_DB=seahub_db \
       -v /path/on/host/to-installation-dir:/seafile \
       --link memcached \
-      --link mariadb \
+      --link db \
       layr/docker-seafile -- setup-seafile
 
 Note the memcached instance is linked to your seafile container by adding
@@ -99,7 +99,7 @@ variable `AUTOSTART=true` is set.** A reasonable docker command would be
       -v /path/on/host/to-installation-dir:/seafile \
       -e AUTOSTART=true \
       --link memcached \
-      --link mariadb \
+      --link db \
       layr/docker-seafile
 
 For unraid users: this is the command that should to be converted into a Docker template.
