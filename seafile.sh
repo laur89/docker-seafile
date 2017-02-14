@@ -12,6 +12,10 @@ trap stop_server SIGINT SIGTERM
 
 [[ "$AUTOSTART" =~ ^[Tt]rue && -x /seafile/seafile-server-latest/seafile.sh ]] || exit 0
 
+{
+    echo '----------------------------------------'
+    printf -- "--> launching seafile server at [%s]\n" "$(date)"
+} >> "$LOG"
 /seafile/seafile-server-latest/seafile.sh start >> "$LOG" 2>&1
 
 # wait for process to spin up:

@@ -15,6 +15,10 @@ trap stop_server SIGINT SIGTERM
 # wait for seafile server to start:
 sleep 5
 
+{
+    echo '----------------------------------------'
+    printf -- "--> launching seahub at [%s]\n" "$(date)"
+} >> "$LOG"
 SEAFILE_FASTCGI_HOST='0.0.0.0' /seafile/seafile-server-latest/seahub.sh start-fastcgi >> "$LOG"
 
 # wait for process to spin up:
