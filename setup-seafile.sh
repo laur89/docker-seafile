@@ -1,11 +1,13 @@
 #!/bin/bash
+#
 # https://manual.seafile.com/deploy/using_sqlite.html
+# https://manual.seafile.com/deploy/using_mysql.html
 #
 #
 # Inspiration from following seafile dockers:
 #   https://github.com/foxel/seafile-docker/blob/master/scripts/setup.sh
 
-SEAFILE_PATH=''                       # will be defined later on
+SEAFILE_PATH=''                       # will be defined later on, as it depends on the seafile version
 SEAFILE_URL="https://$SERVER_IP"      # note https (assuming you've enabled https)
 VER_REGEX='^[0-9]+\.[0-9]+\.[0-9]+$'  # seafile version validation regex
 
@@ -35,9 +37,7 @@ download_seafile() {
     readonly SEAFILE_PATH="/seafile/seafile-server-$VER"  # define installation dir
 
     # sanity:
-    if [[ -e "$SEAFILE_PATH" ]]; then
-        fail "[$SEAFILE_PATH] already exists; assuming [$VER] is already installed. abort."
-    fi
+    [[ -e "$SEAFILE_PATH" ]] && fail "[$SEAFILE_PATH] already exists; assuming [$VER] is already installed. abort."
 
     wget \
         --progress=dot:mega \
@@ -65,12 +65,15 @@ setup_seafile() {
     sed --follow-symlinks -i 's/= ask_admin_email()/= '"\"${SEAHUB_ADMIN_USER}\""'/' "$init_admin" || exit 1
     sed --follow-symlinks -i 's/= ask_admin_password()/= '"\"${SEAHUB_ADMIN_PW}\""'/' "$init_admin" || exit 1
 
-    "${SEAFILE_PATH}/setup-seafile.sh" auto || fail "seafile setup failed."
+    # TODO: -i param is only passed so python script would read env vars; see https://github.com/haiwen/seafile-server/pull/24
+    "${SEAFILE_PATH}/setup-seafile-mysql.sh" auto -i "$SERVER_IP" || fail "seafile setup failed."
 
     # Start and stop Seafile eco system. This generates the initial admin user.
     "${SEAFILE_PATH}/seafile.sh" start || exit 1
     "${SEAFILE_PATH}/seahub.sh" start || exit 1
+    sleep 2
     "${SEAFILE_PATH}/seahub.sh" stop || exit 1
+    sleep 1
     "${SEAFILE_PATH}/seafile.sh" stop || exit 1
 
     # Restore original check_init_admin.py
@@ -122,6 +125,12 @@ ENABLE_SIGNUP = False
 ACTIVATE_AFTER_REGISTRATION = False
 FILE_SERVER_ROOT = '${SEAFILE_URL}/seafhttp'
 ENABLE_THUMBNAIL = True
+CACHES = {
+    'default': {
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'LOCATION': 'memcached:11211',
+    }
+}
 EOF
 }
 
@@ -129,7 +138,7 @@ EOF
 check_is_file() {
     local file
     readonly file="$1"
-    [[ -f "$file" ]] || fail "[$file] is not a valid file"
+    [[ -f "$file" ]] || fail "${FUNCNAME[1]}: [$file] is not a valid file"
 }
 
 
