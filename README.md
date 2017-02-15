@@ -29,6 +29,7 @@ DROP DATABASE IF EXISTS `seahub_db`;
 CREATE DATABASE `ccnet_db` CHARACTER SET = 'utf8';
 CREATE DATABASE `seafile_db` CHARACTER SET = 'utf8';
 CREATE DATABASE `seahub_db` CHARACTER SET = 'utf8';
+DROP USER IF EXISTS 'seafile'@'%';
 CREATE USER IF NOT EXISTS 'seafile'@'%' IDENTIFIED BY 'seafile_passwd';
 GRANT ALL PRIVILEGES ON `ccnet_db`.* TO `seafile`@'%';
 GRANT ALL PRIVILEGES ON `seafile_db`.* TO `seafile`@'%';
@@ -75,7 +76,7 @@ match the one you used when creating the db tables & users)
       -v /path/on/host/to-installation-dir:/seafile \
       --link memcached \
       --link db \
-      layr/docker-seafile -- setup-seafile
+      layr/seafile -- setup-seafile
 
 Note the memcached instance is linked to your seafile container by adding
 `--link memcached_container:memcached` to your docker run statement.
@@ -100,7 +101,7 @@ variable `AUTOSTART=true` is set.** A reasonable docker command would be
       -e AUTOSTART=true \
       --link memcached \
       --link db \
-      layr/docker-seafile
+      layr/seafile
 
 For unraid users: this is the command that should to be converted into a Docker template.
 
@@ -108,6 +109,6 @@ For unraid users: this is the command that should to be converted into a Docker 
 
 The Seafile binaries are stored in the permanent volume `/seafile`. To update the
 base system, just stop and drop the container, update the image using
-`docker pull layr/docker-seafile` and run it again. To update Seafile, follow the normal
+`docker pull layr/seafile` and run it again. To update Seafile, follow the normal
 upgrade process described in the [Seafile upgrade manual](https://github.com/haiwen/seafile/wiki/Upgrading-Seafile-Server).
 

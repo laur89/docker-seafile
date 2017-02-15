@@ -28,7 +28,7 @@ download_seafile() {
             | grep -o 'https://bintray.com/artifact/download/seafile-org/seafile/seafile-server_.*x86-64.tar.gz' \
             | head -n1)" || exit 1
 
-        readonly VER="$(grep -Po 'seafile-server_\K.*(?=_x8.*$)' <<< "$url")" || fail "unable to parse lates version from url [$url]"
+        readonly VER="$(grep -Po 'seafile-server_\K.*(?=_x8.*$)' <<< "$url")" || fail "unable to parse latest version from url [$url]"
         [[ "$VER" =~ $VER_REGEX ]] || fail "found latest ver was in unexpected format: [$VER]"
     else  # actual version number was specified:
         url="https://bintray.com/artifact/download/seafile-org/seafile/seafile-server_${VER}_x86-64.tar.gz"
