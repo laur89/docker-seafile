@@ -125,6 +125,7 @@ ENABLE_SIGNUP = False
 ACTIVATE_AFTER_REGISTRATION = False
 FILE_SERVER_ROOT = '${SEAFILE_URL}/seafhttp'
 ENABLE_THUMBNAIL = True
+LOGIN_ATTEMPT_LIMIT = 3
 CACHES = {
     'default': {
         'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
