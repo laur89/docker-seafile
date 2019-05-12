@@ -110,5 +110,5 @@ For unraid users: this is the command that should to be converted into a Docker 
 The Seafile binaries are stored in the permanent volume `/seafile`. To update the
 base system, just stop and drop the container, update the image using
 `docker pull layr/seafile` and run it again. To update Seafile, follow the normal
-upgrade process described in the [Seafile upgrade manual](https://github.com/haiwen/seafile/wiki/Upgrading-Seafile-Server).
+upgrade process described in the [Seafile upgrade manual](https://manual.seafile.com/deploy/upgrade.html).
 
