@@ -5,6 +5,7 @@ MAINTAINER    Laur
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Seafile dependencies and system configuration
+# note ffmpeg, pillow, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
 RUN apt-get update 
 RUN apt-get install --no-install-recommends -y \
         python2.7 \
@@ -16,6 +17,7 @@ RUN apt-get install --no-install-recommends -y \
         python-memcache \
         wget \
         crudini \
+        ffmpeg \
         unattended-upgrades
 RUN update-locale LANG=C.UTF-8
 
@@ -27,7 +29,7 @@ RUN apt-get install --no-install-recommends -y \
         python-dev \
         build-essential
 
-RUN pip install pylibmc django-pylibmc
+RUN pip install pylibmc django-pylibmc pillow moviepy
 
 RUN ulimit -n 30000
 

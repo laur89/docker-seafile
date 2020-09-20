@@ -133,6 +133,26 @@ CACHES = {
         'LOCATION': 'memcached:11211',
     }
 }
+
+# Enable or disable thumbnail for video. ffmpeg and moviepy should be installed first.
+# For details, please refer to https://manual.seafile.com/deploy/video_thumbnails.html
+# NOTE: since version 6.1
+ENABLE_VIDEO_THUMBNAIL = True
+
+# Use the frame at 5 second as thumbnail
+THUMBNAIL_VIDEO_FRAME_TIME = 5
+
+# Absolute filesystem path to the directory that will hold thumbnail files.
+THUMBNAIL_ROOT = '/seafile/seahub-data/thumbnail/video'
+
+### enable ONLYOFFICE (for online doc viewing/editing):
+# Enable Only Office
+ENABLE_ONLYOFFICE = True
+VERIFY_ONLYOFFICE_CERTIFICATE = True
+ONLYOFFICE_APIJS_URL = 'https://oods.aliste.eu/web-apps/apps/api/documents/api.js'
+ONLYOFFICE_FILE_EXTENSION = ('doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'odt', 'fodt', 'odp', 'fodp', 'ods', 'fods')
+ONLYOFFICE_EDIT_FILE_EXTENSION = ('docx', 'pptx', 'xlsx')
+
 EOF
 }
 
