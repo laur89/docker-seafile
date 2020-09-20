@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # https://manual.seafile.com/deploy/using_sqlite.html
 # https://manual.seafile.com/deploy/using_mysql.html
@@ -136,21 +136,7 @@ CACHES = {
 EOF
 }
 
-
-check_is_file() {
-    local file
-    readonly file="$1"
-    [[ -f "$file" ]] || fail "${FUNCNAME[1]}: [$file] is not a valid file"
-}
-
-
-fail() {
-    local msg
-    readonly msg="$1"
-    echo -e "\n\n    ERROR: $msg\n\n"
-    exit 1
-}
-
+source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }
 
 # Perform sanity:
 if [[ -z "$VER" ]]; then

@@ -38,6 +38,7 @@ ENTRYPOINT ["/sbin/my_init"]
 
 # Seafile daemons
 RUN mkdir /etc/service/seafile /etc/service/seahub
+ADD common.sh /common.sh
 ADD seafile.sh /etc/service/seafile/run
 ADD seahub.sh /etc/service/seahub/run
 
