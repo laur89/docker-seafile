@@ -90,8 +90,12 @@ CACHES = {
     'default': {
         'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
         'LOCATION': 'memcached:11211',
+    },
+    'locmem': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+COMPRESS_CACHE_BACKEND = 'locmem'
 
 # Enable or disable thumbnail for video. ffmpeg and moviepy should be installed first.
 # For details, please refer to https://manual.seafile.com/deploy/video_thumbnails.html
