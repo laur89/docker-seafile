@@ -1,4 +1,4 @@
-FROM phusion/baseimage:master-amd64
+FROM phusion/baseimage:0.11
 
 MAINTAINER    Laur
 # https://manual.seafile.com/deploy/using_sqlite.html
