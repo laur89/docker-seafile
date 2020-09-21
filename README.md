@@ -73,6 +73,7 @@ match the one you used when creating the db tables & users)
       -e CCNET_DB=ccnet_db \
       -e SEAFILE_DB=seafile_db \
       -e SEAHUB_DB=seahub_db \
+      -e AUTOSTART=false \
       -v /path/on/host/to-installation-dir:/seafile \
       --link memcached \
       --link db \
@@ -82,6 +83,18 @@ Note the memcached instance is linked to your seafile container by adding
 `--link memcached_container:memcached` to your docker run statement.
 (or use [user defined networks](https://docs.docker.com/engine/userguide/networking/work-with-networks/#linking-containers-in-user-defined-networks)
 instead, as `--link` option is now deprecated)
+
+### Upgrade
+
+Running following will simply download the required version and unpack it under
+`/seafile`; you'll still want to follow upgrade notes afterwards (see below);
+note `VER` value constraints/expectations as described above.
+
+    docker run -it --rm \
+      -e VER=6.0.7 \
+      -e AUTOSTART=false \
+      -v /path/on/host/to-installation-dir:/seafile \
+      layr/seafile -- download-seafile
 
 ## Running Seafile
 

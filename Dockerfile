@@ -1,4 +1,5 @@
-FROM        phusion/baseimage
+FROM phusion/baseimage:master-amd64
+
 MAINTAINER    Laur
 # https://manual.seafile.com/deploy/using_sqlite.html
 
@@ -45,6 +46,7 @@ ADD seafile.sh /etc/service/seafile/run
 ADD seahub.sh /etc/service/seahub/run
 
 ADD setup-seafile.sh /usr/local/sbin/setup-seafile
+ADD download-seafile.sh /usr/local/sbin/download-seafile
 ADD apt-auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
 # Clean up for smaller image
