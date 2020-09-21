@@ -6,9 +6,10 @@ MAINTAINER    Laur
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Seafile dependencies and system configuration
-# note ffmpeg, pillow, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
-RUN apt-get update 
-RUN apt-get install --no-install-recommends -y \
+# - note ffmpeg, pillow, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
+# - note python-pil is instead of python-imaging
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
         python2.7 \
         libpython2.7 \
         python-setuptools \
@@ -17,6 +18,7 @@ RUN apt-get install --no-install-recommends -y \
         python-urllib3 \
         python-memcache \
         wget \
+        netcat \
         crudini \
         ffmpeg \
         unattended-upgrades
