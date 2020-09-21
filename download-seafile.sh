@@ -20,14 +20,21 @@ download_seafile() {
             --progress=dot:mega \
             --no-check-certificate \
             "https://www.seafile.com/en/download/" -O- \
-            | grep -o 'https://.*/seafile-server_.*x86-64.tar.gz' \
+            | grep -o 'https://.*/seafile-server_.*_x86-64.tar.gz' \
             | head -n1)" || exit 1
 
         readonly VER="$(grep -Po 'seafile-server_\K.*(?=_x8.*$)' <<< "$url")" || fail "unable to parse latest version from url [$url]"
         [[ "$VER" =~ $VER_REGEX ]] || fail "found latest ver was in unexpected format: [$VER]"
     else  # actual version number was specified:
-        url="https://bintray.com/artifact/download/seafile-org/seafile/seafile-server_${VER}_x86-64.tar.gz"
+        url="$(wget \
+            --progress=dot:mega \
+            --no-check-certificate \
+            "https://www.seafile.com/en/download/" -O- \
+            | grep -o "https://.*/seafile-server_${VER}_x86-64.tar.gz" \
+            | head -n1)" || exit 1
     fi
+
+    is_valid_url "$url" || fail "found download url [$url] is not a valid url"
 
     readonly SEAFILE_PATH="/seafile/seafile-server-$VER"  # define installation dir
 
