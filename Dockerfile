@@ -12,7 +12,7 @@ RUN apt-get install --no-install-recommends -y \
         python2.7 \
         libpython2.7 \
         python-setuptools \
-        python-imaging \
+        python-pil \
         python-mysqldb \
         python-urllib3 \
         python-memcache \
