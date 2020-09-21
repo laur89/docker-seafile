@@ -22,7 +22,7 @@ sleep 5
     echo '----------------------------------------'
     printf -- "--> launching seahub at [%s]\n" "$(date)"
 } >> "$LOG"
-SEAFILE_FASTCGI_HOST='0.0.0.0' /seafile/seafile-server-latest/seahub.sh start-fastcgi >> "$LOG"
+/seafile/seafile-server-latest/seahub.sh start >> "$LOG"
 
 # wait for process to spin up:
 sleep 5

@@ -52,7 +52,7 @@ setup_webdav() {
 enabled = true
 port = 8080
 host = 0.0.0.0
-fastcgi = true
+fastcgi = false
 share_name = /seafdav
 EOF
 }
