@@ -30,20 +30,28 @@ RUN apt-get update && \
         crudini \
         ffmpeg \
         unattended-upgrades && \
-    update-locale LANG=C.UTF-8
 
 # deps for pylibmc:
-RUN apt-get install --no-install-recommends -y \
+    apt-get install --no-install-recommends -y \
         python-pip \
         libmemcached-dev \
         zlib1g-dev \
         python-dev \
         build-essential && \
+# install pylibmc and friends..:
     pip install pylibmc django-pylibmc pillow moviepy && \
-    ulimit -n 30000
+    ulimit -n 30000 && \
+    update-locale LANG=C.UTF-8 && \
+# prep dirs for seafile services' daemons:
+    mkdir /etc/service/seafile /etc/service/seahub && \
+# Clean up for smaller image:
+    apt-get purge -y \
+        python-pip \
+        zlib1g-dev \
+        python-dev \
+        build-essential && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
-EXPOSE 10001 12001 8000 8080 8082
 
 # TODO: do we want to download in dockerfile, and house the binary within container (by foxel)?:
 #ENV SEAFILE_VERSION 7.0.5
@@ -64,7 +72,6 @@ EXPOSE 10001 12001 8000 8080 8082
 ENTRYPOINT ["/sbin/my_init"]
 
 # Seafile daemons
-RUN mkdir /etc/service/seafile /etc/service/seahub
 ADD common.sh /common.sh
 ADD seafile.sh /etc/service/seafile/run
 ADD seahub.sh /etc/service/seahub/run
@@ -73,13 +80,7 @@ ADD setup-seafile.sh /usr/local/sbin/setup-seafile
 ADD download-seafile.sh /usr/local/sbin/download-seafile
 ADD apt-auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
-# Clean up for smaller image
-RUN apt-get purge -y \
-        python-pip \
-        zlib1g-dev \
-        python-dev \
-        build-essential
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+EXPOSE 10001 12001 8000 8080 8082
 VOLUME "/seafile"
 WORKDIR "/seafile"
