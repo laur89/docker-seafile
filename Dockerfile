@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:master-amd64
 #########################
 # see https://github.com/haiwen/seafile-docker/tree/master/image/seafile_7.1 for 
 # official image (note it still contains nginx as of writing!)
