@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-readonly LOG=/var/log/seafile.log
+readonly LOG=/var/log/seahub.log
+readonly SEAHUB_BIN=/seafile/seafile-server-latest/seahub.sh
 
 stop_server() {
     pkill -f seahub
@@ -11,7 +12,7 @@ stop_server() {
 trap stop_server SIGINT SIGTERM
 source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }
 
-[[ "$AUTOSTART" =~ ^[Tt]rue$ && -x /seafile/seafile-server-latest/seahub.sh ]] || exit 0
+[[ "$AUTOSTART" =~ ^[Tt]rue$ && -x "$SEAHUB_BIN" ]] || exit 0
 
 wait_for_db
 
@@ -22,13 +23,14 @@ sleep 5
     echo '----------------------------------------'
     printf -- "--> launching seahub at [%s]\n" "$(date)"
 } >> "$LOG"
-SEAFILE_FASTCGI_HOST='0.0.0.0' /seafile/seafile-server-latest/seahub.sh start-fastcgi >> "$LOG"
+"$SEAHUB_BIN" start >> "$LOG"
 
 # wait for process to spin up:
 sleep 5
 
 # Script should not exit unless seahub died
 while pgrep -f seahub >/dev/null 2>&1; do
+#while pgrep -f "seahub.wsgi:application" >/dev/null 2>&1; do
     sleep 5
 done
 

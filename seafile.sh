@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 readonly LOG=/var/log/seafile.log
+readonly SEAFILE_BIN=/seafile/seafile-server-latest/seafile.sh
 
 stop_server() {
     pgrep -f 'seafile-controller|ccnet-server|seaf-server' | xargs kill
@@ -11,7 +12,7 @@ stop_server() {
 trap stop_server SIGINT SIGTERM
 source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }
 
-[[ "$AUTOSTART" =~ ^[Tt]rue$ && -x /seafile/seafile-server-latest/seafile.sh ]] || exit 0
+[[ "$AUTOSTART" =~ ^[Tt]rue$ && -x "$SEAFILE_BIN" ]] || exit 0
 
 wait_for_db
 sleep 2
@@ -20,7 +21,7 @@ sleep 2
     echo '----------------------------------------'
     printf -- "--> launching seafile server at [%s]\n" "$(date)"
 } >> "$LOG"
-/seafile/seafile-server-latest/seafile.sh start >> "$LOG" 2>&1
+"$SEAFILE_BIN" start >> "$LOG" 2>&1
 
 # wait for process to spin up:
 sleep 5

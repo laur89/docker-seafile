@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #
-# https://manual.seafile.com/deploy/using_sqlite.html
-# https://manual.seafile.com/deploy/using_mysql.html
+# https://download.seafile.com/published/seafile-manual/deploy/using_mysql.md
 #
 #
 # Inspiration from following seafile dockers:
@@ -28,19 +27,20 @@ setup_seafile() {
     "${SEAFILE_PATH}/setup-seafile-mysql.sh" auto -i "$SERVER_IP" || fail "seafile setup failed."
 
     # Start and stop Seafile eco system. This generates the initial admin user.
-    "${SEAFILE_PATH}/seafile.sh" start || exit 1
-    "${SEAFILE_PATH}/seahub.sh" start || exit 1
+    "${SEAFILE_PATH}/seafile.sh" start || fail "seafile start failed"
     sleep 2
-    "${SEAFILE_PATH}/seahub.sh" stop || exit 1
+    "${SEAFILE_PATH}/seahub.sh" start || fail "seahub start failed"
+    sleep 2
+    "${SEAFILE_PATH}/seahub.sh" stop || fail "seahub stop failed"
     sleep 1
-    "${SEAFILE_PATH}/seafile.sh" stop || exit 1
+    "${SEAFILE_PATH}/seafile.sh" stop || fail "seafile stop failed"
 
     # Restore original check_init_admin.py
     mv -- "$init_admin_bak" "$init_admin" || exit 1
 }
 
 
-# https://manual.seafile.com/extension/webdav.html
+# https://download.seafile.com/published/seafile-manual/extension/README.md
 setup_webdav() {
     local f
 
@@ -52,13 +52,13 @@ setup_webdav() {
 enabled = true
 port = 8080
 host = 0.0.0.0
-fastcgi = true
+fastcgi = false
 share_name = /seafdav
 EOF
 }
 
 
-# https://manual.seafile.com/deploy/deploy_with_nginx.html
+# https://download.seafile.com/published/seafile-manual/deploy/deploy_with_nginx.md
 setup_ccnet_for_nginx() {
     local f
 
@@ -69,10 +69,9 @@ setup_ccnet_for_nginx() {
 }
 
 
-# https://manual.seafile.com/deploy/deploy_with_nginx.html
+# https://download.seafile.com/published/seafile-manual/config/seahub_settings_py.md
 # additional conf from:
-#   https://manual.seafile.com/config/user_options.html
-#   https://manual.seafile.com/config/seahub_settings_py.html
+#   https://download.seafile.com/published/seafile-manual/deploy/deploy_with_nginx.md
 setup_seahub_settings_for_nginx() {
     local f
 
@@ -90,19 +89,25 @@ CACHES = {
     'default': {
         'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
         'LOCATION': 'memcached:11211',
+    },
+    'locmem': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+COMPRESS_CACHE_BACKEND = 'locmem'
 
 # Enable or disable thumbnail for video. ffmpeg and moviepy should be installed first.
 # For details, please refer to https://manual.seafile.com/deploy/video_thumbnails.html
 # NOTE: since version 6.1
-ENABLE_VIDEO_THUMBNAIL = True
+# TODO: video thumb deprecated since 7.1?
+#ENABLE_VIDEO_THUMBNAIL = True
 
 # Use the frame at 5 second as thumbnail
-THUMBNAIL_VIDEO_FRAME_TIME = 5
+# TODO: video thumb deprecated since 7.1?
+#THUMBNAIL_VIDEO_FRAME_TIME = 5
 
 # Absolute filesystem path to the directory that will hold thumbnail files.
-THUMBNAIL_ROOT = '/seafile/seahub-data/thumbnail/video'
+#THUMBNAIL_ROOT = '/seafile/seahub-data/thumbnail'
 
 ### enable ONLYOFFICE (for online doc viewing/editing):
 # Enable Only Office

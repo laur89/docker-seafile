@@ -3,6 +3,7 @@
 # Inspiration from following seafile dockers:
 #   https://github.com/foxel/seafile-docker/blob/master/scripts/setup.sh
 
+DOWNLOAD_DOMAIN='https://www.seafile.com/en/download/'
 SEAFILE_PATH=''                       # will be defined later on, as it depends on the seafile version
 VER_REGEX='^[0-9]+\.[0-9]+\.[0-9]+$'  # seafile version validation regex
 
@@ -19,15 +20,21 @@ download_seafile() {
         url="$(wget \
             --progress=dot:mega \
             --no-check-certificate \
-            "https://www.seafile.com/en/download/" -O- \
-            | grep -o 'https://.*/seafile-server_.*x86-64.tar.gz' \
-            | head -n1)" || exit 1
+            "$DOWNLOAD_DOMAIN" -O- \
+            | grep -o 'https://.*/seafile-server_.*_x86-64.tar.gz' \
+            | head -n1)" || fail "dl url resolution failed"
 
-        readonly VER="$(grep -Po 'seafile-server_\K.*(?=_x8.*$)' <<< "$url")" || fail "unable to parse latest version from url [$url]"
-        [[ "$VER" =~ $VER_REGEX ]] || fail "found latest ver was in unexpected format: [$VER]"
+        VER="$(grep -Po 'seafile-server_\K.*(?=_x86.*$)' <<< "$url")" || fail "unable to parse latest version from url [$url]"
+        [[ "$VER" =~ $VER_REGEX ]] || fail "found latest ver was in an unexpected format: [$VER]"
     else  # actual version number was specified:
-        url="https://bintray.com/artifact/download/seafile-org/seafile/seafile-server_${VER}_x86-64.tar.gz"
+        url="$(wget \
+            --progress=dot:mega \
+            --no-check-certificate \
+            "$DOWNLOAD_DOMAIN" -O- \
+            | grep -o "https://.*/seafile-server_${VER}_x86-64.tar.gz")" || fail "dl url resolution failed"
     fi
+
+    is_valid_url "$url" || fail "found download url [$url] is not a valid url"
 
     readonly SEAFILE_PATH="/seafile/seafile-server-$VER"  # define installation dir
 
@@ -40,8 +47,8 @@ download_seafile() {
         -O "$downloaded_tarball" \
         "$url" || fail "wgetting tarball from [$url] failed"
 
-    mkdir -p -- "$SEAFILE_PATH" || exit 1
-    tar -xzf "$downloaded_tarball" --strip-components=1 -C "$SEAFILE_PATH" || exit 1
+    mkdir -p -- "$SEAFILE_PATH" || fail "mkdir -p $SEAFILE_PATH failed w/ $?"
+    tar -xzf "$downloaded_tarball" --strip-components=1 -C "$SEAFILE_PATH" || fail "untarring [$downloaded_tarball] failed w/ $?"
     rm -- "$downloaded_tarball" || exit 1
 }
 
@@ -52,7 +59,7 @@ source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1;
 if [[ -z "$VER" ]]; then
     fail "VER env var was not provided"
 elif ! [[ "$VER" =~ $VER_REGEX || "$VER" == latest ]]; then
-    fail "version was in unaccepted format: [$VER]"
+    fail "version was in an unaccepted format: [$VER]"
 fi
 
 download_seafile

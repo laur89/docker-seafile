@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+# Checks whether given url is a valid url.
+#
+# @param {string}  url   url which validity to test.
+#
+# @returns {bool}  true, if provided url was a valid url.
+is_valid_url() {
+    local regex
+
+    readonly regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+
+    [[ "$1" =~ $regex ]]
+}
+
+
 check_is_file() {
     local file
     readonly file="$1"
@@ -10,7 +24,7 @@ check_is_file() {
 check_dependencies() {
     local i
 
-    for i in nc pgrep crudini; do
+    for i in wget nc pgrep crudini; do
         command -v "$i" >/dev/null || fail "[$i] not installed"
     done
 }
@@ -43,6 +57,8 @@ wait_for_db() {
     until nc -z "$host" "$port"; do
         sleep 2
     done
+
+    echo "Connection to db @ [$host:$port] established"
 
     return 0
 }
