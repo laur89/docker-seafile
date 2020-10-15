@@ -35,7 +35,6 @@ RUN apt-get update && \
         build-essential && \
 # install pylibmc and friends..:
     pip3 install --timeout=3600 \
-        click termcolor colorlog pymysql django==1.11.2 \
         Pillow pylibmc captcha jinja2 sqlalchemy django-pylibmc django-simple-captcha python3-ldap \
         moviepy && \
     ulimit -n 30000 && \
