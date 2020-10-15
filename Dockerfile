@@ -1,9 +1,17 @@
 FROM phusion/baseimage:0.11
+#########################
+# see https://github.com/haiwen/seafile-docker/tree/master/image/seafile_7.1 for 
+# official image (note it still contains nginx as of writing!)
+#########################
 
 MAINTAINER    Laur
-# https://manual.seafile.com/deploy/using_sqlite.html
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+## Give children processes x sec timeout on exit:
+#ENV KILL_PROCESS_TIMEOUT=30
+## Give all other processes (such as those which have been forked) x sec timeout on exit:
+#ENV KILL_ALL_PROCESSES_TIMEOUT=30
 
 # Seafile dependencies and system configuration
 # - note ffmpeg, pillow, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
@@ -21,8 +29,8 @@ RUN apt-get update && \
         netcat \
         crudini \
         ffmpeg \
-        unattended-upgrades
-RUN update-locale LANG=C.UTF-8
+        unattended-upgrades && \
+    update-locale LANG=C.UTF-8
 
 # deps for pylibmc:
 RUN apt-get install --no-install-recommends -y \
@@ -30,13 +38,27 @@ RUN apt-get install --no-install-recommends -y \
         libmemcached-dev \
         zlib1g-dev \
         python-dev \
-        build-essential
+        build-essential && \
+    pip install pylibmc django-pylibmc pillow moviepy && \
+    ulimit -n 30000
 
-RUN pip install pylibmc django-pylibmc pillow moviepy
-
-RUN ulimit -n 30000
 
 EXPOSE 10001 12001 8000 8080 8082
+
+# TODO: do we want to download in dockerfile, and house the binary within container (by foxel)?:
+#ENV SEAFILE_VERSION 7.0.5
+#ENV SEAFILE_PATH "/opt/seafile/seafile-server-$SEAFILE_VERSION"
+#
+#RUN \
+#    mkdir -p /seafile "${SEAFILE_PATH}" && \
+#    wget --progress=dot:mega --no-check-certificate -O /tmp/seafile-server.tar.gz \
+#        "https://download.seadrive.org/seafile-server_${SEAFILE_VERSION}_x86-64.tar.gz" && \
+#    tar -xzf /tmp/seafile-server.tar.gz --strip-components=1 -C "${SEAFILE_PATH}" && \
+#    sed -ie '/^daemon/d' "${SEAFILE_PATH}/runtime/seahub.conf" && \
+#    rm /tmp/seafile-server.tar.gz \ &&
+#    useradd -r -s /bin/false seafile && \
+#    chown seafile:seafile /seafile "$SEAFILE_PATH"
+
 
 # Baseimage init process
 ENTRYPOINT ["/sbin/my_init"]
@@ -59,4 +81,5 @@ RUN apt-get purge -y \
         build-essential
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+VOLUME "/seafile"
 WORKDIR "/seafile"
