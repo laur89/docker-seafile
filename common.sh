@@ -24,7 +24,7 @@ check_is_file() {
 check_dependencies() {
     local i
 
-    for i in nc pgrep crudini; do
+    for i in wget nc pgrep crudini; do
         command -v "$i" >/dev/null || fail "[$i] not installed"
     done
 }
@@ -57,6 +57,8 @@ wait_for_db() {
     until nc -z "$host" "$port"; do
         sleep 2
     done
+
+    echo "Connection to db @ [$host:$port] established"
 
     return 0
 }

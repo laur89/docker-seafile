@@ -1,5 +1,7 @@
 # Seafile for Docker
 
+## This version is good 'til v7.0.x; for v7.1+, please use newer version/tag!
+
 [Seafile](http://www.seafile.com/) is a "next-generation open source cloud storage
 with advanced features on file syncing, privacy protection and teamwork".
 
@@ -124,5 +126,6 @@ The Seafile binaries are stored in the permanent volume `/seafile`. To update th
 base system, just stop and drop the container, update the image using
 `docker pull layr/seafile` and run it again. To update Seafile, follow the normal
 upgrade process described in the [Seafile upgrade manual](https://download.seafile.com/published/seafile-manual/upgrade/upgrade.md)
-and/or [seafile gitbook](https://seafile.gitbook.io/seafile-server-manual/deploying-seafile-under-linux/upgrade-seafile-server).
+and/or [seafile gitbook](https://seafile.gitbook.io/seafile-server-manual/deploying-seafile-under-linux/upgrade-seafile-server)
+and/or [community docs](https://seafile.readthedocs.io/en/latest)
 
