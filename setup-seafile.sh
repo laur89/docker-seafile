@@ -54,6 +54,7 @@ port = 8080
 host = 0.0.0.0
 fastcgi = false
 share_name = /seafdav
+show_repo_id = true
 EOF
 }
 

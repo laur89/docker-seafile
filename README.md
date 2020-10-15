@@ -129,3 +129,7 @@ upgrade process described in the [Seafile upgrade manual](https://download.seafi
 and/or ~[seafile gitbook](https://seafile.gitbook.io/seafile-server-manual/deploying-seafile-under-linux/upgrade-seafile-server)~
 and/or [community docs](https://seafile.readthedocs.io/en/latest)
 
+## Backup & Recovery
+
+See [here](https://download.seafile.com/published/seafile-manual/docker/deploy%20seafile%20with%20docker.md)
+
