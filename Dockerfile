@@ -1,7 +1,8 @@
 FROM phusion/baseimage:master-amd64
 #########################
 # see https://github.com/haiwen/seafile-docker/tree/master/image/seafile_7.1 for 
-# official image (note it still contains nginx as of writing!)
+# official Dockerfile image (note it still contains nginx as of writing!);
+# for additional clarity, also refer to the installation script @ https://github.com/haiwen/seafile-server-installer/blob/master/seafile-7.1_ubuntu
 #########################
 
 MAINTAINER    Laur
@@ -14,17 +15,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 #ENV KILL_ALL_PROCESSES_TIMEOUT=30
 
 # Seafile dependencies and system configuration
-# - note ffmpeg, pillow, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
+# - note ffmpeg, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
 # - note python-pil is instead of python-imaging
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-        python2.7 \
-        libpython2.7 \
-        python-setuptools \
-        python-pil \
-        python-mysqldb \
-        python-urllib3 \
-        python-memcache \
+        python3 \
+        python3-pip \
+        python3-setuptools \
         wget \
         netcat \
         crudini \
@@ -33,24 +30,25 @@ RUN apt-get update && \
 
 # deps for pylibmc:
     apt-get install --no-install-recommends -y \
-        python-pip \
         libmemcached-dev \
         zlib1g-dev \
-        python-dev \
         build-essential && \
 # install pylibmc and friends..:
-    pip install pylibmc django-pylibmc pillow moviepy && \
+    pip3 install --timeout=3600 \
+        click termcolor colorlog pymysql django==1.11.2 \
+        Pillow pylibmc captcha jinja2 sqlalchemy django-pylibmc django-simple-captcha python3-ldap \
+        moviepy && \
     ulimit -n 30000 && \
     update-locale LANG=C.UTF-8 && \
 # prep dirs for seafile services' daemons:
     mkdir /etc/service/seafile /etc/service/seahub && \
 # Clean up for smaller image:
-    apt-get purge -y \
-        python-pip \
+    apt-get remove -y --purge --autoremove \
+        python3-pip \
         zlib1g-dev \
-        python-dev \
+        libmemcached-dev \
         build-essential && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  /root/.cache/pip*
 
 
 # TODO: do we want to download in dockerfile, and house the binary within container (by foxel)?:
