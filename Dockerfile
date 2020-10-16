@@ -30,6 +30,7 @@ RUN apt-get update && \
 
 # deps for pylibmc:
     apt-get install --no-install-recommends -y \
+        python3-memcache \
         python3-dev \
         libmemcached-dev \
         zlib1g-dev \
