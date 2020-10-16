@@ -129,6 +129,16 @@ upgrade process described in the [Seafile upgrade manual](https://download.seafi
 and/or ~[seafile gitbook](https://seafile.gitbook.io/seafile-server-manual/deploying-seafile-under-linux/upgrade-seafile-server)~
 and/or [community docs](https://seafile.readthedocs.io/en/latest)
 
+General steps:
+- stop seafile server
+- if using unraid, make sure you set env var `AUTOSTART=false`
+- upgrade the image version
+- start server (w/ AUTOSTART=false!)
+- open shell into container
+- run migration scripts/update configs as per [upgrade manual](https://download.seafile.com/published/seafile-manual/upgrade/upgrade.md)
+- set `AUTOSTART=true` again
+- start container
+
 ## Backup & Recovery
 
 See [here](https://download.seafile.com/published/seafile-manual/docker/deploy%20seafile%20with%20docker.md)
