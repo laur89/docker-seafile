@@ -132,12 +132,14 @@ and/or [community docs](https://seafile.readthedocs.io/en/latest)
 General steps:
 - stop seafile server
 - if using unraid, make sure you set env var `AUTOSTART=false`
-- upgrade the image version
+- upgrade the image version if needed (if deps have changed that is)
 - start server (w/ AUTOSTART=false!)
 - open shell into container
+- download new seafile version using included `download-seafile` script as shown above
 - run migration scripts/update configs as per [upgrade manual](https://download.seafile.com/published/seafile-manual/upgrade/upgrade.md)
 - set `AUTOSTART=true` again
-- start container
+- restart container
+- once all confirmed good - remove the old seafile installation dir from /seafile
 
 ## Backup & Recovery
 

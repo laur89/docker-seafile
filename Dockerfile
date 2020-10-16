@@ -30,6 +30,7 @@ RUN apt-get update && \
 
 # deps for pylibmc:
     apt-get install --no-install-recommends -y \
+        python3-dev \
         libmemcached-dev \
         zlib1g-dev \
         build-essential && \
@@ -44,8 +45,9 @@ RUN apt-get update && \
 # Clean up for smaller image:
     apt-get remove -y --purge --autoremove \
         python3-pip \
-        zlib1g-dev \
+        python3-dev \
         libmemcached-dev \
+        zlib1g-dev \
         build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  /root/.cache/pip*
 
