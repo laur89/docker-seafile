@@ -135,7 +135,11 @@ General steps:
 - upgrade the image version if needed (if deps have changed that is)
 - start server (w/ AUTOSTART=false!)
 - open shell into container
-- download new seafile version using included `download-seafile` script as shown above
+- download new seafile version using included `download-seafile` script as shown above, eg (while in container shell):
+  - export VER=latest
+  - download-seafile
+  - cd /seafile/seafile-server-7.1.5  (assuming you just downloaded v 7.1.5)
+  - run the migration scripts as instructed by the manual
 - run migration scripts/update configs as per [upgrade manual](https://download.seafile.com/published/seafile-manual/upgrade/upgrade.md)
 - set `AUTOSTART=true` again
 - restart container
