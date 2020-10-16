@@ -39,7 +39,7 @@ fail() {
 
 
 wait_for_db() {
-    local host port
+    local host port messaged
 
     __parse_db_connection_details() {
         local config
@@ -53,8 +53,8 @@ wait_for_db() {
     }
 
     __parse_db_connection_details
-    echo "Wait until database [$host:$port] is ready..."
     until nc -z "$host" "$port"; do
+        [[ "$messaged" -ne 1 ]] && echo "Waiting until db @ [$host:$port] is responding..." && messaged=1
         sleep 2
     done
 
