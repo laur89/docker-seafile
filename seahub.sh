@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
 readonly LOG=/var/log/seahub.log
+readonly PROCESS_NAME='seahub.wsgi:application'
 readonly SEAHUB_BIN=/seafile/seafile-server-latest/seahub.sh
 
+# TODO: should we kill via pid-files instead?
 stop_server() {
-    pkill -f seahub
+    pkill -f "$PROCESS_NAME"
     #pgrep -f seahub | xargs kill
     exit 0
 }
@@ -29,8 +31,8 @@ sleep 5
 sleep 5
 
 # Script should not exit unless seahub died
-while pgrep -f seahub >/dev/null 2>&1; do
-#while pgrep -f "seahub.wsgi:application" >/dev/null 2>&1; do
+#while pgrep -f seahub >/dev/null 2>&1; do
+while pgrep -f "$PROCESS_NAME" >/dev/null 2>&1; do
     sleep 5
 done
 
