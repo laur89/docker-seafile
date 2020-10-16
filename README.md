@@ -57,6 +57,11 @@ Run the image in a container, exposing ports as needed and making `/seafile` vol
 * `VER`: actual seafile server ver (eg `6.0.7`), or `latest`
 * `SERVER_IP`: domain or IP of the box where seafile is set up; without the protocol
 
+If you want to enable document preview/edit via
+[OnlyOffice](https://github.com/ONLYOFFICE/),
+then also define env var `ONLY_OFFICE_DOMAIN`, eg
+`ONLY_OFFICE_DOMAIN=https://onlyoffice.yourdomain.com`
+
 For example, you could use following command to install & setup (note the db data must
 match the one you used when creating the db tables & users)
 
