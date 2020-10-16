@@ -35,12 +35,10 @@ RUN apt-get update && \
         zlib1g-dev \
         build-essential && \
 # install pylibmc and friends..:
-# TODO: remove 'ulimit -s' statement after https://bugs.launchpad.net/ubuntu/+source/procps/+bug/1874824 is solved (causes pgrep not to work)
     pip3 install --timeout=3600 \
         Pillow pylibmc captcha jinja2 sqlalchemy django-pylibmc django-simple-captcha python3-ldap \
         moviepy && \
     ulimit -n 30000 && \
-    ulimit -s 10240 && \
     update-locale LANG=C.UTF-8 && \
 # prep dirs for seafile services' daemons:
     mkdir /etc/service/seafile /etc/service/seahub && \

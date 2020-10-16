@@ -64,3 +64,5 @@ wait_for_db() {
 }
 
 check_dependencies
+# TODO: remove 'ulimit -s' statement after https://bugs.launchpad.net/ubuntu/+source/procps/+bug/1874824 is solved (causes pgrep not to work):
+ulimit -s 10240
