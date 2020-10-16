@@ -30,13 +30,12 @@ RUN apt-get update && \
 
 # deps for pylibmc:
     apt-get install --no-install-recommends -y \
-        python3-memcache \
         python3-dev \
         libmemcached-dev \
         zlib1g-dev \
         build-essential && \
 # install pylibmc and friends..:
-# TODO: remove 'ulimit -s' statement after https://bugs.launchpad.net/ubuntu/+source/procps/+bug/1874824 is solved
+# TODO: remove 'ulimit -s' statement after https://bugs.launchpad.net/ubuntu/+source/procps/+bug/1874824 is solved (causes pgrep not to work)
     pip3 install --timeout=3600 \
         Pillow pylibmc captcha jinja2 sqlalchemy django-pylibmc django-simple-captcha python3-ldap \
         moviepy && \
@@ -49,7 +48,6 @@ RUN apt-get update && \
     apt-get remove -y --purge --autoremove \
         python3-pip \
         python3-dev \
-        libmemcached-dev \
         zlib1g-dev \
         build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  /root/.cache/pip*
