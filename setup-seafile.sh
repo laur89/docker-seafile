@@ -79,6 +79,7 @@ setup_seahub_settings_for_nginx() {
     readonly f='./conf/seahub_settings.py'
 
     check_is_file "$f"
+
     cat >> "$f" <<EOF
 ENABLE_SIGNUP = False
 ACTIVATE_AFTER_REGISTRATION = False
@@ -110,15 +111,20 @@ COMPRESS_CACHE_BACKEND = 'locmem'
 # Absolute filesystem path to the directory that will hold thumbnail files.
 #THUMBNAIL_ROOT = '/seafile/seahub-data/thumbnail'
 
+EOF
+
+if [[ -n "$ONLY_OFFICE_DOMAIN" ]]; then
+    cat >> "$f" <<EOF
 ### enable ONLYOFFICE (for online doc viewing/editing):
 # Enable Only Office
 ENABLE_ONLYOFFICE = True
 VERIFY_ONLYOFFICE_CERTIFICATE = True
-ONLYOFFICE_APIJS_URL = 'https://oods.aliste.eu/web-apps/apps/api/documents/api.js'
+ONLYOFFICE_APIJS_URL = '${ONLY_OFFICE_DOMAIN}/web-apps/apps/api/documents/api.js'
 ONLYOFFICE_FILE_EXTENSION = ('doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'odt', 'fodt', 'odp', 'fodp', 'ods', 'fods')
 ONLYOFFICE_EDIT_FILE_EXTENSION = ('docx', 'pptx', 'xlsx')
 
 EOF
+fi
 }
 
 
