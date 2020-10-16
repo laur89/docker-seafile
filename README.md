@@ -1,6 +1,6 @@
 # Seafile for Docker
 
-## This version is good 'til v7.0.x; for v7.1+, please use newer version/tag!
+### This version is good from v7.1.x; for older, please use older version/tag!
 
 [Seafile](http://www.seafile.com/) is a "next-generation open source cloud storage
 with advanced features on file syncing, privacy protection and teamwork".
@@ -75,11 +75,11 @@ match the one you used when creating the db tables & users)
       -e CCNET_DB=ccnet_db \
       -e SEAFILE_DB=seafile_db \
       -e SEAHUB_DB=seahub_db \
-      -e AUTOSTART=false \
+      [-e AUTOSTART=false \]
       -v /path/on/host/to-installation-dir:/seafile \
       --link memcached \
       --link db \
-      layr/seafile -- setup-seafile
+      layr/seafile --skip-runit -- setup-seafile
 
 Note the memcached instance is linked to your seafile container by adding
 `--link memcached_container:memcached` to your docker run statement.
@@ -94,9 +94,9 @@ note `VER` value constraints/expectations as described above.
 
     docker run -it --rm \
       -e VER=6.0.7 \
-      -e AUTOSTART=false \
+      [-e AUTOSTART=false \]
       -v /path/on/host/to-installation-dir:/seafile \
-      layr/seafile -- download-seafile
+      layr/seafile --skip-runit -- download-seafile
 
 ## Running Seafile
 
@@ -131,15 +131,15 @@ and/or [community docs](https://seafile.readthedocs.io/en/latest)
 
 General steps:
 - stop seafile server
-- if using unraid, make sure you set env var `AUTOSTART=false`
+- if using unraid, make sure you set env var `AUTOSTART=false`, OR execute with
+  command `--skip-runit`
 - upgrade the image version if needed (if deps have changed that is)
-- start server (w/ AUTOSTART=false!)
+- start server (w/ AUTOSTART=false or `--skip-runit`!)
 - open shell into container
 - download new seafile version using included `download-seafile` script as shown above, eg (while in container shell):
-  - export VER=latest
+  - export VER=latest  (or eg VER=7.1.5)
   - download-seafile
   - cd /seafile/seafile-server-7.1.5  (assuming you just downloaded v 7.1.5)
-  - run the migration scripts as instructed by the manual
 - run migration scripts/update configs as per [upgrade manual](https://download.seafile.com/published/seafile-manual/upgrade/upgrade.md)
 - set `AUTOSTART=true` again
 - restart container
