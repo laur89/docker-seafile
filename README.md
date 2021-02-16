@@ -145,7 +145,7 @@ General steps:
   - export VER=latest  (or eg VER=7.1.5)
   - download-seafile
   - cd /seafile/seafile-server-7.1.5  (assuming you just downloaded v 7.1.5)
-- run migration scripts/update configs as per [upgrade manual](https://download.seafile.com/published/seafile-manual/upgrade/upgrade.md)
+- run migration scripts/update configs as per [upgrade manual](https://download.seafile.com/published/seafile-manual/backup/upgrade/upgrade.md)
 - set `AUTOSTART=true` again
 - restart container
 - once all confirmed good - remove the old seafile installation dir from /seafile
