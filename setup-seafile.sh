@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# https://download.seafile.com/published/seafile-manual/deploy/using_mysql.md
+# https://download.seafile.com/published/seafile-manual/backup/deploy/using_mysql.md
 #
 #
 # Inspiration from following seafile dockers:
@@ -40,7 +40,7 @@ setup_seafile() {
 }
 
 
-# https://download.seafile.com/published/seafile-manual/extension/README.md
+# https://download.seafile.com/published/seafile-manual/backup/extension/README.md
 setup_webdav() {
     local f
 
@@ -58,7 +58,7 @@ EOF
 }
 
 
-# https://download.seafile.com/published/seafile-manual/deploy/deploy_with_nginx.md
+# https://download.seafile.com/published/seafile-manual/backup/deploy/deploy_with_nginx.md
 setup_ccnet_for_nginx() {
     local f
 
@@ -69,9 +69,9 @@ setup_ccnet_for_nginx() {
 }
 
 
-# https://download.seafile.com/published/seafile-manual/config/seahub_settings_py.md
+# https://download.seafile.com/published/seafile-manual/backup/config/seahub_settings_py.md
 # additional conf from:
-#   https://download.seafile.com/published/seafile-manual/deploy/deploy_with_nginx.md
+#   https://download.seafile.com/published/seafile-manual/backup/deploy/deploy_with_nginx.md
 setup_seahub_settings_for_nginx() {
     local f
 
