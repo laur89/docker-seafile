@@ -17,7 +17,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Seafile dependencies and system configuration
 # - note ffmpeg, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
 # - note python-pil is instead of python-imaging
-RUN apt-get update && \
+RUN apt-get -y update && \
     apt-get install --no-install-recommends -y \
         python3 \
         python3-pip \
