@@ -3,7 +3,7 @@
 readonly LOG=/var/log/seafile.log
 readonly SEAFILE_BIN=/seafile/seafile-server-latest/seafile.sh
 
-# TODO: should we kill via pid-files instead?
+# TODO: should we kill via pid-files instead? pids located @ /seafile/pids/
 stop_server() {
     sleep 2  # give chance for seahub to stop first
 

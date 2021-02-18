@@ -1,6 +1,6 @@
 FROM phusion/baseimage:master-amd64
 #########################
-# see https://github.com/haiwen/seafile-docker/tree/master/image/seafile_7.1 for 
+# see https://github.com/haiwen/seafile-docker/tree/master/image/seafile_8.0 for 
 # official Dockerfile image (note it still contains nginx as of writing!);
 # for additional clarity, also refer to the installation script @ https://github.com/haiwen/seafile-server-installer/blob/master/seafile-7.1_ubuntu
 #########################
@@ -26,6 +26,8 @@ RUN apt-get update && \
         netcat \
         crudini \
         ffmpeg \
+        vim \
+        htop \
         unattended-upgrades && \
 
 # deps for pylibmc:
@@ -36,7 +38,9 @@ RUN apt-get update && \
         build-essential && \
 # install pylibmc and friends..:
     pip3 install --timeout=3600 \
-        Pillow pylibmc captcha jinja2 sqlalchemy django-pylibmc django-simple-captcha python3-ldap \
+        click termcolor colorlog pymysql django==2.2.* \
+        future mysqlclient Pillow pylibmc captcha jinja2 \
+        sqlalchemy django-pylibmc django-simple-captcha pyjwt \
         moviepy && \
     ulimit -n 30000 && \
     update-locale LANG=C.UTF-8 && \

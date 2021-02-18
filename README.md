@@ -1,7 +1,5 @@
 # Seafile for Docker
 
-### This version is good from v7.1.x; for older, please use older version/tag!
-
 [Seafile](http://www.seafile.com/) is a "next-generation open source cloud storage
 with advanced features on file syncing, privacy protection and teamwork".
 
