@@ -51,7 +51,6 @@ RUN apt-get -y update && \
     apt-get remove -y --purge --autoremove \
         python3-pip \
         python3-dev \
-        zlib1g-dev \
         build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  /root/.cache/pip*
 
