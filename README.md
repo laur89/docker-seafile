@@ -152,3 +152,7 @@ General steps:
 
 See [here](https://download.seafile.com/published/seafile-manual/docker/deploy%20seafile%20with%20docker.md)
 
+## TODO
+
+Read about GC, free version doesn't run it automatically
+
