@@ -6,6 +6,9 @@ readonly SEAHUB_BIN=/seafile/seafile-server-latest/seahub.sh
 
 # TODO: should we kill via pid-files instead?
 stop_server() {
+    #"$SEAHUB_BIN" stop >> "$LOG"  # TODO: shouldn't we do this?
+    #sleep 5
+
     pkill -f "$PROCESS_NAME"
     #pgrep -f seahub | xargs kill
     exit 0

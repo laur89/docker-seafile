@@ -42,7 +42,7 @@ RUN apt-get -y update && \
         click termcolor colorlog pymysql django==2.2.* \
         future mysqlclient Pillow pylibmc captcha jinja2 \
         sqlalchemy django-pylibmc django-simple-captcha pyjwt \
-        moviepy && \
+        moviepy lxml && \
     ulimit -n 30000 && \
     update-locale LANG=C.UTF-8 && \
 # prep dirs for seafile services' daemons:
@@ -53,6 +53,9 @@ RUN apt-get -y update && \
         python3-dev \
         build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  /root/.cache/pip*
+
+# note lxml is installed as otherwise seafile-installdir/logs/seafdav.log had this warning:
+#          WARNING :  Could not import lxml: using xml instead (up to 10% slower). Consider `pip install lxml`(see https://pypi.python.org/pypi/lxml).
 
 
 # TODO: do we want to download in dockerfile, and house the binary within container (by foxel)?:

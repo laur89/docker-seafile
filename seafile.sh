@@ -7,6 +7,9 @@ readonly SEAFILE_BIN=/seafile/seafile-server-latest/seafile.sh
 stop_server() {
     sleep 2  # give chance for seahub to stop first
 
+    #"$SEAFILE_BIN" stop >> "$LOG" 2>&1  # TODO: shouldn't we do this?
+    #sleep 5
+
     pgrep -f 'seafile-controller|seaf-server' | xargs kill
     #pkill -f seafile-controller
     exit 0

@@ -129,6 +129,7 @@ fi
 
 
 
+# TODO: should we source download-seafile instead of calling it? otherwise common imports & SEAFILE_PATH definition would left undefined!
 #source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }  # provided by download-seafile
 download-seafile || exit 1
 setup_seafile
