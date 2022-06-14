@@ -128,7 +128,7 @@ For unraid users: this is the command that should to be converted into a Docker 
 The Seafile binaries are stored in the permanent volume `/seafile`. To update the
 base system, just stop and drop the container, update the image using
 `docker pull layr/seafile` and run it again. To update Seafile, follow the normal
-upgrade process described in the [Seafile upgrade manual](https://download.seafile.com/published/seafile-manual/backup/upgrade/upgrade.md)
+upgrade process described in the [Seafile upgrade manual](https://manual.seafile.com/upgrade/upgrade/)
 and/or ~[seafile gitbook](https://seafile.gitbook.io/seafile-server-manual/deploying-seafile-under-linux/upgrade-seafile-server)~
 and/or [community docs](https://seafile.readthedocs.io/en/latest)
 
@@ -143,7 +143,7 @@ General steps:
   - export VER=latest  (or eg VER=7.1.5)
   - download-seafile
   - cd /seafile/seafile-server-7.1.5  (assuming you just downloaded v 7.1.5)
-- run migration scripts/update configs as per [upgrade manual](https://download.seafile.com/published/seafile-manual/backup/upgrade/upgrade.md)
+- run migration scripts/update configs as per [upgrade manual](https://manual.seafile.com/upgrade/upgrade/)
 - set `AUTOSTART=true` again
 - restart container
 - once all confirmed good - remove the old seafile installation dir from /seafile

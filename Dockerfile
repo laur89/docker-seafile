@@ -42,7 +42,7 @@ RUN apt-get -y update && \
         click termcolor colorlog pymysql django==2.2.* \
         future mysqlclient Pillow pylibmc captcha jinja2 \
         sqlalchemy django-pylibmc django-simple-captcha pyjwt \
-        moviepy lxml && \
+        moviepy lxml pycryptodome==3.12.0 cffi==1.14.0 && \
     ulimit -n 30000 && \
     update-locale LANG=C.UTF-8 && \
 # prep dirs for seafile services' daemons:

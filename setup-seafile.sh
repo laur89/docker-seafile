@@ -59,17 +59,6 @@ EOF
 }
 
 
-# https://download.seafile.com/published/seafile-manual/backup/deploy/deploy_with_nginx.md
-setup_ccnet_for_nginx() {
-    local f
-
-    readonly f='./conf/ccnet.conf'
-
-    check_is_file "$f"
-    crudini --set "$f" General SERVICE_URL "$SEAFILE_URL"
-}
-
-
 # https://download.seafile.com/published/seafile-manual/backup/config/seahub_settings_py.md
 # additional conf from:
 #   https://download.seafile.com/published/seafile-manual/backup/deploy/deploy_with_nginx.md
@@ -83,6 +72,7 @@ setup_seahub_settings_for_nginx() {
     cat >> "$f" <<EOF
 ENABLE_SIGNUP = False
 ACTIVATE_AFTER_REGISTRATION = False
+SERVICE_URL = '$SEAFILE_URL'
 FILE_SERVER_ROOT = '${SEAFILE_URL}/seafhttp'
 ENABLE_THUMBNAIL = True
 LOGIN_ATTEMPT_LIMIT = 2
@@ -134,7 +124,6 @@ fi
 download-seafile || exit 1
 setup_seafile
 setup_webdav
-setup_ccnet_for_nginx
 setup_seahub_settings_for_nginx
 
 exit 0
