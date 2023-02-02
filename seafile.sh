@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# for inspiration/debugging, see https://github.com/haiwen/seafile-docker/blob/master/scripts_9.0/start.py
 
 readonly LOG=/var/log/seafile.log
 readonly SEAFILE_BIN=/seafile/seafile-server-latest/seafile.sh

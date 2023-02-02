@@ -57,8 +57,9 @@ Run the image in a container, exposing ports as needed and making `/seafile` vol
 
 If you want to enable document preview/edit via
 [OnlyOffice](https://github.com/ONLYOFFICE/),
-then also define env var `ONLY_OFFICE_DOMAIN`, eg
-`ONLY_OFFICE_DOMAIN=https://onlyoffice.yourdomain.com`
+then also define env vars
+ - `ONLY_OFFICE_DOMAIN`, eg `ONLY_OFFICE_DOMAIN=https://onlyoffice.yourdomain.com` (omit trailing slash)
+ - `ONLYOFFICE_JWT_SECRET`, eg `ONLYOFFICE_JWT_SECRET=jwt-secret-configured-in-your-onlyoffice-instance`
 
 For example, you could use following command to install & setup (note the db data must
 match the one you used when creating the db tables & users)

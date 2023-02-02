@@ -40,7 +40,7 @@ setup_seafile() {
 }
 
 
-# https://download.seafile.com/published/seafile-manual/backup/extension/README.md
+# https://download.seafile.com/published/seafile-manual/backup/extension/webdav.md
 setup_webdav() {
     local f
 
@@ -89,7 +89,7 @@ CACHES = {
 COMPRESS_CACHE_BACKEND = 'locmem'
 
 # Enable or disable thumbnail for video. ffmpeg and moviepy should be installed first.
-# For details, please refer to https://manual.seafile.com/deploy/video_thumbnails.html
+# For details, please refer to https://manual.seafile.com/deploy/video_thumbnails/
 # NOTE: since version 6.1
 # TODO: video thumb deprecated since 7.1?
 #ENABLE_VIDEO_THUMBNAIL = True
@@ -112,6 +112,7 @@ VERIFY_ONLYOFFICE_CERTIFICATE = True
 ONLYOFFICE_APIJS_URL = '${ONLY_OFFICE_DOMAIN}/web-apps/apps/api/documents/api.js'
 ONLYOFFICE_FILE_EXTENSION = ('doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'odt', 'fodt', 'odp', 'fodp', 'ods', 'fods')
 ONLYOFFICE_EDIT_FILE_EXTENSION = ('docx', 'pptx', 'xlsx')
+ONLYOFFICE_JWT_SECRET = '${ONLYOFFICE_JWT_SECRET}'
 
 EOF
 fi
