@@ -1,4 +1,4 @@
-FROM phusion/baseimage:master-amd64
+FROM phusion/baseimage:focal-1.0.0
 #########################
 # see https://github.com/haiwen/seafile-docker/tree/master/image/seafile_8.0 for 
 # official Dockerfile image (note it still contains nginx as of writing!);
@@ -7,7 +7,8 @@ FROM phusion/baseimage:master-amd64
 
 MAINTAINER    Laur
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8
 
 ## Give children processes x sec timeout on exit:
 #ENV KILL_PROCESS_TIMEOUT=30
@@ -15,34 +16,36 @@ ENV DEBIAN_FRONTEND=noninteractive
 #ENV KILL_ALL_PROCESSES_TIMEOUT=30
 
 # Seafile dependencies and system configuration
-# - note ffmpeg, moviepy is for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
-# - note python-pil is instead of python-imaging
-RUN apt-get -y update && \
+# - note ffmpeg && moviepy are for video thumbnails (https://github.com/haiwen/seafile-docs/blob/master/deploy/video_thumbnails.md)
+RUN apt-get -y update --fix-missing && \
     apt-get install --no-install-recommends -y \
         python3 \
         python3-pip \
         python3-setuptools \
         libmysqlclient-dev \
+        libmemcached11 \
+        libmemcached-dev \
+        libffi-dev \
         wget \
         netcat \
         crudini \
         ffmpeg \
         vim \
         htop \
-        unattended-upgrades && \
-
-# deps for pylibmc:
-    apt-get install --no-install-recommends -y \
+        tzdata \
+        ca-certificates \
+        build-essential \
         python3-dev \
-        libmemcached-dev \
-        zlib1g-dev \
-        build-essential && \
+        unattended-upgrades && \
+    rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
+    python3 -m pip install --upgrade pip && rm -r /root/.cache/pip && \
+
 # install pylibmc and friends..:
     pip3 install --timeout=3600 \
-        click termcolor colorlog pymysql django==2.2.* \
-        future mysqlclient Pillow pylibmc captcha jinja2 \
-        sqlalchemy django-pylibmc django-simple-captcha pyjwt \
-        moviepy lxml pycryptodome==3.12.0 cffi==1.14.0 && \
+        click termcolor colorlog pymysql django==3.2.* \
+        future mysqlclient Pillow pylibmc captcha markupsafe==2.0.1 jinja2 \
+        sqlalchemy django-pylibmc django-simple-captcha pyjwt pycryptodome==3.12.0 psd-tools lxml \
+        moviepy cffi==1.14.6 && \
     ulimit -n 30000 && \
     update-locale LANG=C.UTF-8 && \
 # prep dirs for seafile services' daemons:
@@ -52,7 +55,7 @@ RUN apt-get -y update && \
         python3-pip \
         python3-dev \
         build-essential && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  /root/.cache/pip*
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  /root/.cache/pip
 
 # note lxml is installed as otherwise seafile-installdir/logs/seafdav.log had this warning:
 #          WARNING :  Could not import lxml: using xml instead (up to 10% slower). Consider `pip install lxml`(see https://pypi.python.org/pypi/lxml).
@@ -70,7 +73,7 @@ RUN apt-get -y update && \
 #    sed -ie '/^daemon/d' "${SEAFILE_PATH}/runtime/seahub.conf" && \
 #    rm /tmp/seafile-server.tar.gz \ &&
 #    useradd -r -s /bin/false seafile && \
-#    chown seafile:seafile /seafile "$SEAFILE_PATH"
+#    chown seafile:seafile /run/seafile "$SEAFILE_PATH"
 
 
 # Baseimage init process
