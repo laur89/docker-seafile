@@ -1,6 +1,6 @@
 FROM phusion/baseimage:focal-1.0.0
 #########################
-# see https://github.com/haiwen/seafile-docker/tree/master/image/seafile_8.0 for 
+# see https://github.com/haiwen/seafile-docker/blob/master/image/seafile_10.0/Dockerfile for 
 # official Dockerfile image (note it still contains nginx as of writing!);
 # for additional clarity, also refer to the installation script @ https://github.com/haiwen/seafile-server-installer/blob/master/seafile-7.1_ubuntu
 #########################
@@ -43,9 +43,9 @@ RUN apt-get -y update --fix-missing && \
 # install pylibmc and friends..:
     pip3 install --timeout=3600 \
         click termcolor colorlog pymysql django==3.2.* \
-        future mysqlclient Pillow pylibmc captcha markupsafe==2.0.1 jinja2 \
-        sqlalchemy django-pylibmc django-simple-captcha pyjwt pycryptodome==3.12.0 psd-tools lxml \
-        moviepy cffi==1.14.6 && \
+        future==0.18.* mysqlclient==2.1.* Pillow==9.3.* pylibmc captcha==0.4 markupsafe==2.0.1 jinja2 \
+        sqlalchemy==1.4.3 django-pylibmc django-simple-captcha==0.5.* pyjwt==2.6.* djangosaml2==1.5.* pysaml2==7.2.* pycryptodome==3.16.* psd-tools lxml \
+        moviepy cffi==1.15.1 && \
     ulimit -n 30000 && \
     update-locale LANG=C.UTF-8 && \
 # prep dirs for seafile services' daemons:
