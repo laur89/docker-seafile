@@ -34,6 +34,10 @@ RUN apt-get -y update --fix-missing && \
         htop \
         tzdata \
         ca-certificates \
+        ldap-utils \
+        libldap-2.5-0 \
+        libldap2-dev \
+        python3-ldap3 \
         build-essential \
         python3-dev \
         dnsutils \
@@ -47,7 +51,7 @@ RUN apt-get -y update --fix-missing && \
         click termcolor colorlog pymysql django==4.2.* \
         future==0.18.* mysqlclient==2.1.* Pillow==10.2.* pylibmc captcha==0.5.* markupsafe==2.0.1 jinja2 \
         sqlalchemy==2.0.18 django-pylibmc django_simple_captcha==0.6.* pyjwt==2.6.* djangosaml2==1.5.* pysaml2==7.2.* pycryptodome==3.16.* cffi==1.15.1 \
-        psd-tools lxml moviepy && \
+        python-ldap==3.4.3 psd-tools lxml moviepy && \
     ulimit -n 30000 && \
     update-locale LANG=C.UTF-8 && \
 # prep dirs for seafile services' daemons:
