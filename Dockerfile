@@ -95,6 +95,6 @@ ADD download-seafile.sh /usr/local/sbin/download-seafile
 ADD apt-auto-upgrades /etc/apt/apt.conf.d/20auto-upgrades
 
 
-EXPOSE 10001 12001 8000 8080 8082
+EXPOSE 10001 12001 8000 8080 8082 8083
 VOLUME "/seafile"
 WORKDIR "/seafile"

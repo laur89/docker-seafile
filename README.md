@@ -151,9 +151,32 @@ General steps:
 
 ## Backup & Recovery
 
-See [here](https://download.seafile.com/published/seafile-manual/docker/deploy%20seafile%20with%20docker.md)
+See [documentation](https://manual.seafile.com/maintain/backup_recovery/)
 
-## TODO
+## Troubleshooting
 
-Read about GC, free version doesn't run it automatically
+- if `seahub` fails to start and nothing obvious is in the logs, then
+    - [modify conf/gunicorn.conf](https://forum.seafile.com/t/seahub-failed-to-start-error/18161/2)
+      from `daemon = True` to `daemon = False`, then run `/etc/service/seahub/run`
+      manually, you should see error in terminal
+      
+## GC
+
+[GC](https://manual.seafile.com/maintain/seafile_gc/) needs to be ran
+periodically to fee up space; tl;dr:
+    - **shut down server!**
+        - ie make sure you set env var `AUTOSTART=false`, OR execute with
+          command `--skip-runit`
+    - `seaf-gc.sh --dry-run [repo-id1] [repo-id2] ...`
+        - note the optional `--dry-run` opt
+    - clean up also files in `/seafile/seafile-data/webdavtmp/`
+        - see line in run.sh or https://forum.seafile.com/t/cleanup-webdavtmp-files/15647/3
+
+Note:
+> Libraries deleted by the users are not immediately removed from the system. Instead,
+  they're moved into a "trash" in the system admin page. Before they're cleared from
+  the trash, their blocks won't be garbage collected.
+    - meaning you'd have to log in w/ admin user and nuke the deleted library
+      from trash for GC to pick it up
+
 

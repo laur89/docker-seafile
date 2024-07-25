@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# https://download.seafile.com/published/seafile-manual/backup/deploy/using_mysql.md
+# https://manual.seafile.com/deploy/using_mysql/
 #
 #
 # Inspiration from following seafile dockers:
@@ -40,7 +40,7 @@ setup_seafile() {
 }
 
 
-# https://download.seafile.com/published/seafile-manual/backup/extension/webdav.md
+# https://manual.seafile.com/extension/webdav/
 setup_webdav() {
     local f
 
@@ -59,9 +59,9 @@ EOF
 }
 
 
-# https://download.seafile.com/published/seafile-manual/backup/config/seahub_settings_py.md
+# https://manual.seafile.com/config/seahub_settings_py/
 # additional conf from:
-#   https://download.seafile.com/published/seafile-manual/backup/deploy/deploy_with_nginx.md
+#   https://manual.seafile.com/deploy/https_with_nginx/#modifying-seahub_settingspy
 setup_seahub_settings_for_nginx() {
     local f
 
@@ -73,6 +73,7 @@ setup_seahub_settings_for_nginx() {
 ENABLE_SIGNUP = False
 ACTIVATE_AFTER_REGISTRATION = False
 SERVICE_URL = '$SEAFILE_URL'
+CSRF_TRUSTED_ORIGINS = [SERVICE_URL]
 FILE_SERVER_ROOT = '${SEAFILE_URL}/seafhttp'
 ENABLE_THUMBNAIL = True
 LOGIN_ATTEMPT_LIMIT = 2

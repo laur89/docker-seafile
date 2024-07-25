@@ -54,7 +54,7 @@ wait_for_db() {
 
     __parse_db_connection_details
     until nc -z "$host" "$port"; do
-        [[ "$messaged" -ne 1 ]] && echo "Waiting until db @ [$host:$port] is responding..." && messaged=1
+        [[ -z "$messaged" ]] && echo "Waiting until db @ [$host:$port] is responding..." && messaged=TRUE
         sleep 2
     done
 
@@ -64,5 +64,3 @@ wait_for_db() {
 }
 
 check_dependencies
-# TODO: remove 'ulimit -s' statement after https://bugs.launchpad.net/ubuntu/+source/procps/+bug/1874824 is solved (causes pgrep not to work):
-ulimit -s 10240
