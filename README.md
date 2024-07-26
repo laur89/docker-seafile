@@ -141,10 +141,12 @@ General steps:
 - start server (w/ AUTOSTART=false or `--skip-runit`!)
 - open shell into container
 - download new seafile version using included `download-seafile` script as shown above, eg (while in container shell):
-  - export VER=latest  (or eg VER=7.1.5)
-  - download-seafile
-  - cd /seafile/seafile-server-7.1.5  (assuming you just downloaded v 7.1.5)
+  - $ export VER=latest  (or eg VER=7.1.5)
+  - $ download-seafile
+  - $ cd /seafile/seafile-server-7.1.5  (assuming you just downloaded v 7.1.5)
 - run migration scripts/update configs as per [upgrade manual](https://manual.seafile.com/upgrade/upgrade/)
+  - remember, even patch version upgrade will require migration (likely via
+    `minor-upgrade.sh` script)!
 - set `AUTOSTART=true` again
 - restart container
 - once all confirmed good - remove the old seafile installation dir from /seafile
@@ -169,6 +171,11 @@ periodically to fee up space; tl;dr:
           command `--skip-runit`
     - `seaf-gc.sh --dry-run [repo-id1] [repo-id2] ...`
         - note the optional `--dry-run` opt
+        - note this only removes deleted libraries
+        - add `-r` opt to check libs for outdated historic blocks:
+            - `seaf-gc.sh -r`
+        - add `--rm-fs` opt you can also remove garbage fs objects
+            - `seaf-gc.sh --rm-fs`
     - clean up also files in `/seafile/seafile-data/webdavtmp/`
         - see line in run.sh or https://forum.seafile.com/t/cleanup-webdavtmp-files/15647/3
 
