@@ -161,23 +161,33 @@ See [documentation](https://manual.seafile.com/maintain/backup_recovery/)
     - [modify conf/gunicorn.conf](https://forum.seafile.com/t/seahub-failed-to-start-error/18161/2)
       from `daemon = True` to `daemon = False`, then run `/etc/service/seahub/run`
       manually, you should see error in terminal
+- if you get errors similar to
+  > [WARNING] Failed to execute sql: (1054, "Unknown column 'domain' in 'org_saml_config'")
+  during migration, then see [this forum post](https://forum.seafile.com/t/upgrade-from-10-0-1-to-11-0-5-issues-with-mysql/19392)
+
       
 ## GC
 
-[GC](https://manual.seafile.com/maintain/seafile_gc/) needs to be ran
-periodically to fee up space; tl;dr:
-    - **shut down server!**
-        - ie make sure you set env var `AUTOSTART=false`, OR execute with
-          command `--skip-runit`
-    - `seaf-gc.sh --dry-run [repo-id1] [repo-id2] ...`
-        - note the optional `--dry-run` opt
-        - note this only removes deleted libraries
-        - add `-r` opt to check libs for outdated historic blocks:
-            - `seaf-gc.sh -r`
-        - add `--rm-fs` opt you can also remove garbage fs objects
-            - `seaf-gc.sh --rm-fs`
-    - clean up also files in `/seafile/seafile-data/webdavtmp/`
-        - see line in run.sh or https://forum.seafile.com/t/cleanup-webdavtmp-files/15647/3
+[GC](https://manual.seafile.com/maintain/seafile_gc/) needs to be ran periodically
+to fee up space; tl;dr:
+
+- **shut down server!**
+    - ie make sure you set env var `AUTOSTART=false`, OR execute with
+        command `--skip-runit`
+- `seaf-gc.sh --dry-run [repo-id1] [repo-id2] ...`
+    - note the optional `--dry-run` opt
+    - note this only removes deleted libraries
+    - add `-r` opt to check libs for outdated historic blocks:
+        - `seaf-gc.sh -r`
+    - add `--rm-fs` opt you can also remove garbage fs objects
+        - `seaf-gc.sh --rm-fs`
+- tl;dr run these 4 commands:
+    - `seaf-gc.sh --dry-run`
+    - `seaf-gc.sh`
+    - `seaf-gc.sh -r`
+    - `seaf-gc.sh --rm-fs`
+- clean up also files in `/seafile/seafile-data/webdavtmp/`
+    - see line in our own run.sh or https://forum.seafile.com/t/cleanup-webdavtmp-files/15647/3
 
 Note:
 > Libraries deleted by the users are not immediately removed from the system. Instead,
