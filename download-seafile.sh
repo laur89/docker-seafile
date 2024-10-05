@@ -18,18 +18,16 @@ download_seafile() {
 
     if [[ "$VER" == latest ]]; then
         url="$(wget \
-            --progress=dot:mega \
             --no-check-certificate \
             "$DOWNLOAD_DOMAIN" -O- \
             | grep -o 'https://.*/seafile-server_.*_x86-64.tar.gz' \
             | sort -u \
             | tail -n1)" || fail "dl url resolution failed for version [$VER]"
 
-        VER="$(grep -Po 'seafile-server_\K.*(?=_x86.*$)' <<< "$url")" || fail "unable to parse latest version from url [$url]"
+        VER="$(grep -Po 'seafile-server_\K.*(?=_x86-64.*$)' <<< "$url")" || fail "unable to parse latest version from url [$url]"
         [[ "$VER" =~ $VER_REGEX ]] || fail "found latest ver was in an unexpected format: [$VER]"
     else  # actual version number was specified:
         url="$(wget \
-            --progress=dot:mega \
             --no-check-certificate \
             "$DOWNLOAD_DOMAIN" -O- \
             | grep -o "https://.*/seafile-server_${VER}_x86-64.tar.gz")" || fail "dl url resolution failed for version [$VER]"

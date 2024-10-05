@@ -1,4 +1,4 @@
-FROM phusion/baseimage:jammy-1.0.2
+FROM phusion/baseimage:jammy-1.0.4
 #########################
 # see https://github.com/haiwen/seafile-docker/blob/master/image/seafile_10.0/Dockerfile for 
 # official Dockerfile image (note it still contains nginx as of writing!);
@@ -86,7 +86,7 @@ RUN apt-get -y update --fix-missing && \
 ENTRYPOINT ["/sbin/my_init"]
 
 # Seafile daemons
-ADD common.sh /common.sh
+ADD common.sh gc.sh  /
 ADD seafile.sh /etc/service/seafile/run
 ADD seahub.sh /etc/service/seahub/run
 
