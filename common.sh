@@ -30,11 +30,19 @@ check_dependencies() {
 }
 
 
+err() {
+    >&2 echo -e "$*" 1>&2
+}
+
+
 fail() {
-    local msg
-    readonly msg="$1"
-    echo -e "\n\n    ERROR: $msg\n\n"
+    err "ERR: $*"
     exit 1
+}
+
+
+is_autostart() {
+    [[ "$AUTOSTART" =~ ^[Tt]rue$ ]]
 }
 
 

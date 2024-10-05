@@ -18,7 +18,7 @@ stop_server() {
 trap stop_server SIGINT SIGTERM
 source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }
 
-[[ "$AUTOSTART" =~ ^[Tt]rue$ && -x "$SEAHUB_BIN" ]] || exit 0
+is_autostart && [[ -x "$SEAHUB_BIN" ]] || exit 0
 
 wait_for_db
 

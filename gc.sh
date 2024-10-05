@@ -6,16 +6,9 @@ seaf_running() {
 }
 
 
-err() {
-    >&2 echo -e "$*" 1>&2
-}
+source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }
 
-fail() {
-    err "$@"
-    exit 1
-}
-
-
+is_autostart && fail "AUTOSTART=${AUTOSTART}, cannot run GC"
 seaf_running && fail "seafile running, cannot run GC"
 
 
