@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+
+LOG_ROOT='/seafile/logs'
 
 # Checks whether given url is a valid url.
 #

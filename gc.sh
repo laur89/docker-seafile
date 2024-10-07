@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 #
+# For reference see https://github.com/haiwen/seafile-docker/blob/master/scripts/scripts_12.0/gc.sh
+#
+#readonly SEAFILE_BIN=/seafile/seafile-server-latest/seafile.sh
+readonly GC_BIN=/seafile/seafile-server-latest/seaf-gc.sh
 
+# perhaps also verify /pids/ dir is empty? although currently it's not properly
+# cleaned up: https://github.com/haiwen/seafile/issues/2831
 seaf_running() {
+    local i
+
+    i="$(sv status seafile)"
+    [[ "$i" =~ ^down: ]] || return 0  # any other status than 'down', consider running
+
     pgrep -f 'seafile-controller|seaf-server' > /dev/null
 }
 
@@ -21,10 +32,11 @@ else
 fi
 
 # ...then execute GC; see https://github.com/laur89/docker-seafile?tab=readme-ov-file#gc
-gc='/seafile/seafile-server-latest/seaf-gc.sh'
-"$gc"  --dry-run || exit 1
-"$gc"            || exit 1
-"$gc"  -r        || exit 1
-"$gc"  --rm-fs   || exit 1
+"$GC_BIN"  --dry-run || exit $?
+"$GC_BIN"            || exit $?
+sleep 1
+"$GC_BIN"  -r        || exit $?
+sleep 1
+"$GC_BIN"  --rm-fs   || exit $?
 
 exit 0
