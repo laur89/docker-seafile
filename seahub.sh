@@ -7,7 +7,8 @@ readonly SEAHUB_BIN=/seafile/seafile-server-latest/seahub.sh
 
 # TODO: should we kill via pid-files instead?
 stop_server() {
-    "$SEAHUB_BIN" stop >> "$LOG"
+    printf -- "--> stopping seahub at [%s]" "$(date)" >> "$LOG"
+    "$SEAHUB_BIN" stop >> "$LOG" 2>&1
     sleep 2
 
     pkill -f "$PROCESS_NAME"
@@ -23,21 +24,22 @@ is_autostart && [[ -x "$SEAHUB_BIN" ]] || exit 0
 wait_for_db
 
 # wait for seafile server to start:
-sleep 5
+sleep 3
 
 {
     echo '----------------------------------------'
     printf -- "--> launching seahub at [%s]\n" "$(date)"
 } >> "$LOG"
-"$SEAHUB_BIN" start >> "$LOG"
+"$SEAHUB_BIN" start >> "$LOG" 2>&1
 
 # wait for process to spin up:
-sleep 5
+#sleep 5
 
 # Script should not exit unless seahub died
-#while pgrep -f seahub >/dev/null 2>&1; do
-while pgrep -f "$PROCESS_NAME" >/dev/null 2>&1; do
-    sleep 5
+#while pgrep -f "$PROCESS_NAME" >/dev/null 2>&1; do
+while true; do
+    sleep 60 &
+    wait $!
 done
 
 exit 0
