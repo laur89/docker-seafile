@@ -19,8 +19,7 @@ seaf_running() {
 
 source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }
 
-is_autostart && fail "AUTOSTART=${AUTOSTART}, cannot run GC"
-seaf_running && fail "seafile running, cannot run GC"
+seaf_running && fail 'seafile running, cannot run GC'
 
 
 # first nuke the webdav temp files at least 2d old, see https://forum.seafile.com/t/cleanup-webdavtmp-files/15647/3 :
