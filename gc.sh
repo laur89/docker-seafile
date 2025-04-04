@@ -7,19 +7,39 @@ readonly GC_BIN=/seafile/seafile-server-latest/seaf-gc.sh
 
 # perhaps also verify /pids/ dir is empty? although currently it's not properly
 # cleaned up: https://github.com/haiwen/seafile/issues/2831
-seaf_running() {
+is_seaf_stopped() {
     local i
 
     i="$(sv status seafile)"
-    [[ "$i" =~ ^down: ]] || return 0  # any other status than 'down', consider running
+    [[ "$i" =~ ^down: ]] || return 1  # any other status than 'down', consider running
 
-    pgrep -f 'seafile-controller|seaf-server' > /dev/null
+    if pgrep -f 'seafile-controller|seaf-server' > /dev/null; then
+        return 1
+    fi
+
+    return 0
+}
+
+
+is_seaf_running() {
+    local i
+
+    i="$(sv status seafile)"
+    [[ "$i" =~ ^run: ]]  # any other status than 'run', consider NOT running
 }
 
 
 source /common.sh || { echo -e "    ERROR: failed to import /common.sh"; exit 1; }
 
-seaf_running && fail 'seafile running, cannot run GC'
+is_seaf_running
+RUNNING_AT_START=$?
+
+if [[ "$RUNNING_AT_START" -eq 0 ]]; then
+    sv stop seafile || fail "[sv stop seafile] failed w/ $?"
+    sleep 2
+fi
+
+is_seaf_stopped || fail 'seafile not stopped, cannot run GC'  # sanity
 
 
 # first nuke the webdav temp files at least 2d old, see https://forum.seafile.com/t/cleanup-webdavtmp-files/15647/3 :
@@ -31,11 +51,16 @@ else
 fi
 
 # ...then execute GC; see https://github.com/laur89/docker-seafile?tab=readme-ov-file#gc
-"$GC_BIN"  --dry-run || exit $?
-"$GC_BIN"            || exit $?
+"$GC_BIN"  --dry-run || fail "[$GC_BIN --dry-run] failed w/ $?"
+"$GC_BIN"            || fail "[$GC_BIN] failed w/ $?"
 sleep 1
-"$GC_BIN"  -r        || exit $?
+"$GC_BIN"  -r        || fail "[$GC_BIN -r] failed w/ $?"
 sleep 1
-"$GC_BIN"  --rm-fs   || exit $?
+"$GC_BIN"  --rm-fs   || fail "[$GC_BIN --rm-fs] failed w/ $?"
+sleep 1
+
+if [[ "$RUNNING_AT_START" -eq 0 ]]; then
+    sv start seafile || fail "[sv start seafile] failed w/ $?"
+fi
 
 exit 0

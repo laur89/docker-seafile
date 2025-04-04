@@ -34,6 +34,7 @@ setup_seafile() {
     "${SEAFILE_PATH}/seahub.sh" stop || fail "seahub stop failed"
     sleep 1
     "${SEAFILE_PATH}/seafile.sh" stop || fail "seafile stop failed"
+    sleep 2
 
     # Restore original check_init_admin.py
     mv -- "$init_admin_bak" "$init_admin" || exit 1

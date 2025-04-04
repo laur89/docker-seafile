@@ -27,7 +27,7 @@ check_is_file() {
 check_dependencies() {
     local i
 
-    for i in wget nc pgrep crudini; do
+    for i in wget nc pgrep pkill crudini; do
         command -v "$i" >/dev/null || fail "[$i] not installed"
     done
 }

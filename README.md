@@ -129,7 +129,7 @@ For unraid users: this is the command that should to be converted into a Docker 
 The Seafile binaries are stored in the permanent volume `/seafile`. To update the
 base system, just stop and drop the container, update the image using
 `docker pull layr/seafile` and run it again. To update Seafile, follow the normal
-upgrade process described in the [Seafile upgrade manual](https://manual.seafile.com/upgrade/upgrade/)
+upgrade process described in the [Seafile upgrade manual](https://manual.seafile.com/latest/upgrade/upgrade/)
 and/or ~[seafile gitbook](https://seafile.gitbook.io/seafile-server-manual/deploying-seafile-under-linux/upgrade-seafile-server)~
 and/or [community docs](https://seafile.readthedocs.io/en/latest)
 
@@ -144,7 +144,7 @@ General steps:
   - $ export VER=latest  (or eg VER=7.1.5)
   - $ download-seafile
   - $ cd /seafile/seafile-server-7.1.5  (assuming you just downloaded v 7.1.5)
-- run migration scripts/update configs as per [upgrade manual](https://manual.seafile.com/upgrade/upgrade/)
+- run migration scripts/update configs as per [upgrade manual](https://manual.seafile.com/latest/upgrade/upgrade/)
   - remember, even patch version upgrade will require migration (likely via
     `minor-upgrade.sh` script)!
 - set `AUTOSTART=true` again
@@ -153,7 +153,7 @@ General steps:
 
 ## Backup & Recovery
 
-See [documentation](https://manual.seafile.com/maintain/backup_recovery/)
+See [documentation](https://manual.seafile.com/latest/administration/backup_recovery/)
 
 ## Troubleshooting
 
@@ -168,7 +168,7 @@ See [documentation](https://manual.seafile.com/maintain/backup_recovery/)
       
 ## GC
 
-[GC](https://manual.seafile.com/maintain/seafile_gc/) needs to be ran periodically
+[GC](https://manual.seafile.com/latest/administration/seafile_gc) needs to be ran periodically
 to fee up space; tl;dr:
 
 - **shut down server!**

@@ -22,6 +22,8 @@ stop_server() {
     #                                                https://github.com/mar10/wsgidav/issues/327
     if pgrep -f  "$WEBDAV_PROCESS_NAME" > /dev/null; then
         #pkill --signal SIGHUP -f  "$WEBDAV_PROCESS_NAME"
+        pkill --signal SIGINT  -f  "$WEBDAV_PROCESS_NAME"
+        sleep 1
         pkill --signal SIGKILL -f  "$WEBDAV_PROCESS_NAME"
     fi
 
